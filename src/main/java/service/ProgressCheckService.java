@@ -13,7 +13,8 @@ import java.util.List;
 public class ProgressCheckService {
     public static List<BudgetLineItem> getProgress() {
         List<BudgetLineItem> lineItems = new ArrayList<>();
-        HashMap<Integer, List<Expense>> categoryMap = TransactionRepository.getTransactionsGroupedByCategory();
+        List<Category> categories = CategoryRepository.getCategories();
+        HashMap<Integer, List<Expense>> categoryMap = TransactionRepository.getTransactionsGroupedByCategory(categories);
         BudgetLineItem totalBudgetLineItem = new BudgetLineItem();
         totalBudgetLineItem.setLineItemName("Total");
         totalBudgetLineItem.setLimit(1000);

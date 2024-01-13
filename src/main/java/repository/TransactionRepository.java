@@ -1,5 +1,6 @@
 package repository;
 
+import model.Category;
 import model.Expense;
 
 import java.util.ArrayList;
@@ -18,11 +19,13 @@ public class TransactionRepository {
         return expenses;
     }
 
-    public static HashMap<Integer, List<Expense>> getTransactionsGroupedByCategory() {
+    public static HashMap<Integer, List<Expense>> getTransactionsGroupedByCategory(List<Category> categories) {
         HashMap<Integer, List<Expense>> categoryMap = new HashMap<>();
+        for(Category category: categories){
+            categoryMap.putIfAbsent(category.getCategoryId(), new ArrayList<>());
+        }
         for(Expense expense: getTransactions()){
             int categoryId = expense.getCategory().getCategoryId();
-            categoryMap.putIfAbsent(categoryId, new ArrayList<>());
             categoryMap.get(categoryId).add(expense);
         }
         return categoryMap;

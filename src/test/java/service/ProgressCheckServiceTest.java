@@ -3,7 +3,6 @@ package service;
 import model.BudgetLineItem;
 import model.Category;
 import model.Expense;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,7 @@ class ProgressCheckServiceTest {
     static Category category = new Category("test_category",1,100);
     static Expense expense = new Expense.ExpenseBuilder(10).setCategory(category).build();
     static List<Expense> expenses = Collections.singletonList(expense);
+    static List<Category> categories = Collections.singletonList(category);
     static HashMap<Integer, List<Expense>> categoryMap = new HashMap<>();
 
     @BeforeAll
@@ -33,7 +33,8 @@ class ProgressCheckServiceTest {
     void getProgress() {
         try (MockedStatic<TransactionRepository> transactionRepositoryMockedStatic = Mockito.mockStatic(TransactionRepository.class);
          MockedStatic<CategoryRepository> categoryRepositoryMockedStatic = Mockito.mockStatic(CategoryRepository.class)){
-            transactionRepositoryMockedStatic.when(TransactionRepository::getTransactionsGroupedByCategory).thenReturn(categoryMap);
+            categoryRepositoryMockedStatic.when(CategoryRepository::getCategories).thenReturn(categories);
+            transactionRepositoryMockedStatic.when(() -> TransactionRepository.getTransactionsGroupedByCategory(categories)).thenReturn(categoryMap);
             categoryRepositoryMockedStatic.when(() -> CategoryRepository.getCategory(0)).thenReturn(category);
             List<BudgetLineItem> budgetItemList = ProgressCheckService.getProgress();
             assertEquals(2,budgetItemList.size());
