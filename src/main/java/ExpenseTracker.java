@@ -1,6 +1,10 @@
 import controller.ExpenseTrackerController;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ExpenseTracker {
 
@@ -13,7 +17,8 @@ public class ExpenseTracker {
                 "1. Add category \n" +
                 "2. Add expense \n" +
                 "3. Check progress \n" +
-                "4. Exit");
+                "4. Add/Edit Category Budget Limit \n" +
+                "5. Exit");
 
         while (true) {
             for (int i = 0; i < 100; i++) {
@@ -37,25 +42,40 @@ public class ExpenseTracker {
                     System.out.println("*****Add a category*****");
                     System.out.print("Enter Category Name: ");
                     String name = scanner.nextLine();
-                    System.out.print("Enter Budget Limit: ");
-                    double budgetLimit = Double.parseDouble(scanner.nextLine());
-                    ExpenseTrackerController.addCategory(name,budgetLimit);
+                    ExpenseTrackerController.addCategory(name);
                 }
                 case 2 -> {
                     System.out.print("Enter Expense Amount: ");
                     double amount = Double.parseDouble(scanner.nextLine());
+                    System.out.print("Enter Month: ");
+                    int month = Integer.parseInt(scanner.nextLine());
                     System.out.print("""
                             Enter Category Id from the available categories below\s
                              Category Id | Category Name | Budget Limit\s
                             """);
-                    ExpenseTrackerController.getCategories();
+                    ExpenseTrackerController.getCategories(month);
                     int categoryId = Integer.parseInt(scanner.nextLine());
-                    ExpenseTrackerController.addExpense(amount, categoryId);
+                    ExpenseTrackerController.addExpense(amount, categoryId, month);
                 }
                 case 3 -> {
-                    ExpenseTrackerController.getProgress();
+                    System.out.print("Enter Month: ");
+                    int month = Integer.parseInt(scanner.nextLine());
+                    ExpenseTrackerController.getProgress(month);
                 }
                 case 4 -> {
+                    System.out.print("Enter Month: ");
+                    int month = Integer.parseInt(scanner.nextLine());
+                    System.out.print("""
+                            Enter Category Id from the available categories below\s
+                             Category Id | Category Name | Budget Limit\s
+                            """);
+                    ExpenseTrackerController.getCategories(month);
+                    int categoryId = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Enter Budget Limit: ");
+                    double budgetLimit = Double.parseDouble(scanner.nextLine());
+                    ExpenseTrackerController.addCategoryBudget(categoryId, month, budgetLimit);
+                }
+                case 5 -> {
                     System.out.println("Exiting the application. Goodbye!");
                     // Closing the scanner
                     scanner.close();
@@ -64,19 +84,6 @@ public class ExpenseTracker {
                 default -> System.out.println("Invalid choice. Please enter a valid option.");
             }
         }
-
-
-//        System.out.println(ExpenseTrackerController.addExpense(10,1));
-//        System.out.println(ExpenseTrackerController.addExpense(20,1));
-//        System.out.println(ExpenseTrackerController.addExpense(30,1));
-//        System.out.println(ExpenseTrackerController.addExpense(10,1));
-//        System.out.println(ExpenseTrackerController.addExpense(20,2));
-//        System.out.println(ExpenseTrackerController.addExpense(30,2));
-//        System.out.println(ExpenseTrackerController.addExpense(10,2));
-//        System.out.println(ExpenseTrackerController.addExpense(30,3));
-//        System.out.println(ExpenseTrackerController.addExpense(20,3));
-//        System.out.println(ExpenseTrackerController.addExpense(50,0));
-//        System.out.println(ExpenseTrackerController.addExpense(40,0));
 
     }
 

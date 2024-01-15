@@ -9,6 +9,7 @@ public class Expense implements BudgetComponent {
 
     //optional
     private final Category category;
+    private int month;
 
     @Override
     public double getTotal() {
@@ -32,9 +33,14 @@ public class Expense implements BudgetComponent {
         return category;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
     private Expense(ExpenseBuilder builder){
         this.amount = builder.amount;
         this.category = builder.category;
+        this.month = builder.month;
     }
 
     public static class ExpenseBuilder{
@@ -44,6 +50,7 @@ public class Expense implements BudgetComponent {
 
         //optional
         private Category category;
+        private int month;
 
         public ExpenseBuilder(double amount) {
             this.amount = amount;
@@ -51,6 +58,11 @@ public class Expense implements BudgetComponent {
 
         public ExpenseBuilder setCategory(Category category) {
             this.category = category;
+            return this;
+        }
+
+        public ExpenseBuilder setMonth(int month) {
+            this.month = month;
             return this;
         }
 

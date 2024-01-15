@@ -11,15 +11,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Order(2)
-class TransactionRepositoryTest {
+class ExpenseRepositoryTest {
 
-    static Category category = new Category("test_category",0,100);
-    static Expense expense = new Expense.ExpenseBuilder(10).setCategory(category).build();
+    static Category category = new Category.CategoryBuilder("test_category",0).build();
+    static Expense expense = new Expense.ExpenseBuilder(10).setCategory(category).setMonth(1).build();
     List<Category> categories = Collections.singletonList(category);
 
     @Test
     void addExpense() {
-        assertAll(() -> TransactionRepository.addExpense(expense));
+        assertAll(() -> ExpenseRepository.addExpense(expense));
     }
 
     @Nested
@@ -27,14 +27,14 @@ class TransactionRepositoryTest {
 
         @Test
         void getTransactions() {
-            List<Expense> expenses = TransactionRepository.getTransactions();
+            List<Expense> expenses = ExpenseRepository.getTransactions(1);
             assertEquals(1,expenses.size());
             assertEquals(expense,expenses.get(0));
         }
 
         @Test
         void getTransactionsGroupedByCategory() {
-            HashMap<Integer, List<Expense>> categoryMapFetched = TransactionRepository.getTransactionsGroupedByCategory(categories);
+            HashMap<Integer, List<Expense>> categoryMapFetched = ExpenseRepository.getTransactionsGroupedByCategory(categories, 1);
             assertEquals(1,categoryMapFetched.keySet().size());
             assertEquals(0,categoryMapFetched.keySet().stream().toList().get(0));
             assertEquals(1,categoryMapFetched.get(0).size());

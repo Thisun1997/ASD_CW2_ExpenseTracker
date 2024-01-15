@@ -3,25 +3,24 @@ package service;
 import model.BudgetLineItem;
 import model.Category;
 import model.Expense;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import repository.CategoryRepository;
-import repository.TransactionRepository;
+import repository.ExpenseRepository;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Order(3)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProgressCheckServiceTest {
 
-    static Category category = new Category("test_category",1,100);
+    static Category category = new Category.CategoryBuilder("test_category",0).setMonth(1).setBudgetLimit(100).build();
     static Expense expense = new Expense.ExpenseBuilder(10).setCategory(category).build();
     static List<Expense> expenses = Collections.singletonList(expense);
-    static List<Category> categories = Collections.singletonList(category);
+    static List<Category> budgetCategories = Collections.singletonList(category);
     static HashMap<Integer, List<Expense>> categoryMap = new HashMap<>();
 
     @BeforeAll
@@ -31,12 +30,12 @@ class ProgressCheckServiceTest {
 
     @Test
     void getProgress() {
-        try (MockedStatic<TransactionRepository> transactionRepositoryMockedStatic = Mockito.mockStatic(TransactionRepository.class);
-         MockedStatic<CategoryRepository> categoryRepositoryMockedStatic = Mockito.mockStatic(CategoryRepository.class)){
-            categoryRepositoryMockedStatic.when(CategoryRepository::getCategories).thenReturn(categories);
-            transactionRepositoryMockedStatic.when(() -> TransactionRepository.getTransactionsGroupedByCategory(categories)).thenReturn(categoryMap);
-            categoryRepositoryMockedStatic.when(() -> CategoryRepository.getCategory(0)).thenReturn(category);
-            List<BudgetLineItem> budgetItemList = ProgressCheckService.getProgress();
+        try (MockedStatic<ExpenseRepository> expenseRepositoryMockedStatic = Mockito.mockStatic(ExpenseRepository.class);
+             MockedStatic<CategoryRepository> categoryRepositoryMockedStatic = Mockito.mockStatic(CategoryRepository.class)){
+            categoryRepositoryMockedStatic.when(() -> CategoryRepository.getCategories(1)).thenReturn(budgetCategories);
+            expenseRepositoryMockedStatic.when(() -> ExpenseRepository.getTransactionsGroupedByCategory(budgetCategories,1)).thenReturn(categoryMap);
+            categoryRepositoryMockedStatic.when(() -> CategoryRepository.getBudgetCategory(0,1)).thenReturn(category);
+            List<BudgetLineItem> budgetItemList = ProgressCheckService.getProgress(1);
             assertEquals(2,budgetItemList.size());
             assertEquals("test_category",budgetItemList.get(0).getLineItemName());
             assertEquals(10,budgetItemList.get(0).getTotal());
@@ -51,7 +50,7 @@ class ProgressCheckServiceTest {
     void addExpense_category_exists() {
         try (MockedStatic<CategoryRepository> categoryRepositoryMockedStatic = Mockito.mockStatic(CategoryRepository.class)){
             categoryRepositoryMockedStatic.when(() -> CategoryRepository.getCategory(0)).thenReturn(category);
-            assertEquals("Expense added successfully",ProgressCheckService.addExpense(10,0));
+            assertEquals("Expense added successfully",ProgressCheckService.addExpense(10,0,1));
         }
     }
 
@@ -59,21 +58,41 @@ class ProgressCheckServiceTest {
     void addExpense_category_not_exists() {
         try (MockedStatic<CategoryRepository> categoryRepositoryMockedStatic = Mockito.mockStatic(CategoryRepository.class)){
             categoryRepositoryMockedStatic.when(() -> CategoryRepository.getCategory(1)).thenReturn(null);
-            assertEquals("Category doesn't exist",ProgressCheckService.addExpense(10,1));
+            assertEquals("Category doesn't exist",ProgressCheckService.addExpense(10,1,1));
         }
     }
 
     @Test
+    @Order(1)
     void addCategory() {
-        assertEquals(1,ProgressCheckService.addCategory("test_cat_2",200));
+        assertEquals(1,ProgressCheckService.addCategory("test_cat_2"));
     }
 
     @Test
+    @Order(2)
     void getCategories() {
-        List<Category> categories = ProgressCheckService.getCategories();
+        List<Category> categories = ProgressCheckService.getCategories(1);
         assertEquals(2,categories.size());
         assertEquals("test_category",categories.get(0).getName());
         assertEquals(0,categories.get(0).getCategoryId());
-        assertEquals(100,categories.get(0).getBudgetLimit());
+        assertEquals(200,categories.get(0).getBudgetLimit());
+    }
+
+    @Test
+    @Order(3)
+    void addCategoryBudget_add() {
+        assertEquals("added",ProgressCheckService.addCategoryBudget(1,1,100));
+    }
+
+    @Test
+    @Order(4)
+    void addCategoryBudget_update() {
+        assertEquals("updated",ProgressCheckService.addCategoryBudget(1,1,200));
+    }
+
+    @Test
+    @Order(5)
+    void addCategoryBudget_category_not_exist() {
+        assertEquals("Category doesn't exist",ProgressCheckService.addCategoryBudget(2,1,100));
     }
 }
