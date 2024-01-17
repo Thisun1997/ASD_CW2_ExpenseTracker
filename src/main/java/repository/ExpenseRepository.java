@@ -30,4 +30,14 @@ public class ExpenseRepository {
         }
         return categoryMap;
     }
+
+    public static List<Expense> getTransactionsForCategory(int categoryId) {
+        List<Expense> categoryExpenses = new ArrayList<>();
+        for (Expense expense : expenses) {
+            if (expense.getCategory() != null && expense.getCategory().getCategoryId() == categoryId) {
+                categoryExpenses.add(expense);
+            }
+        }
+        return categoryExpenses;
+    }
 }

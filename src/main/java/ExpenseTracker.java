@@ -15,10 +15,12 @@ public class ExpenseTracker {
         System.out.println("Welcome to the Expense Tracking App! \n" +
                 "Following actions are possible: \n" +
                 "1. Add category \n" +
-                "2. Add expense \n" +
-                "3. Check progress \n" +
-                "4. Add/Edit Category Budget Limit \n" +
-                "5. Exit");
+                "2. Edit category \n" +
+                "3. Delete category \n" +
+                "4. Add expense \n" +
+                "5. Check progress \n" +
+                "6. Add/Edit Category Budget Limit \n" +
+                "7. Exit");
 
         while (true) {
             for (int i = 0; i < 100; i++) {
@@ -45,6 +47,28 @@ public class ExpenseTracker {
                     ExpenseTrackerController.addCategory(name);
                 }
                 case 2 -> {
+                    System.out.println("*****Edit a category*****");
+                    System.out.print("""
+                            Enter Category Id from the available categories below\s
+                             Category Id | Category Name\s
+                            """);
+                    ExpenseTrackerController.getAllCategories();
+                    int categoryId = Integer.parseInt(scanner.nextLine());
+                    System.out.println("Enter the new Name: ");
+                    String newName = scanner.nextLine();
+                    ExpenseTrackerController.editCategory(categoryId, newName);
+                }
+                case 3 -> {
+                    System.out.println("*****Delete a category*****");
+                    System.out.print("""
+                            Enter Category Id from the available categories below\s
+                             Category Id | Category Name\s
+                            """);
+                    ExpenseTrackerController.getAllCategories();
+                    int categoryId = Integer.parseInt(scanner.nextLine());
+                    ExpenseTrackerController.deleteCategory(categoryId);
+                }
+                case 4 -> {
                     System.out.print("Enter Expense Amount: ");
                     double amount = Double.parseDouble(scanner.nextLine());
                     System.out.print("Enter Month: ");
@@ -57,12 +81,12 @@ public class ExpenseTracker {
                     int categoryId = Integer.parseInt(scanner.nextLine());
                     ExpenseTrackerController.addExpense(amount, categoryId, month);
                 }
-                case 3 -> {
+                case 5 -> {
                     System.out.print("Enter Month: ");
                     int month = Integer.parseInt(scanner.nextLine());
                     ExpenseTrackerController.getProgress(month);
                 }
-                case 4 -> {
+                case 6 -> {
                     System.out.print("Enter Month: ");
                     int month = Integer.parseInt(scanner.nextLine());
                     System.out.print("""
@@ -75,7 +99,7 @@ public class ExpenseTracker {
                     double budgetLimit = Double.parseDouble(scanner.nextLine());
                     ExpenseTrackerController.addCategoryBudget(categoryId, month, budgetLimit);
                 }
-                case 5 -> {
+                case 7 -> {
                     System.out.println("Exiting the application. Goodbye!");
                     // Closing the scanner
                     scanner.close();

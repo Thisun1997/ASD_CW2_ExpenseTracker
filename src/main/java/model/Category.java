@@ -1,5 +1,7 @@
 package model;
 
+import util.IdGenerator;
+
 public class Category {
 
     //required
