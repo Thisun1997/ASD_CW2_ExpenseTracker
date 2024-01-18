@@ -40,10 +40,10 @@ class ExpenseTrackerControllerTest {
 
     @Test
     void addCategory() {
-        try (MockedStatic<ProgressCheckService> progressCheckServiceMockedStatic = Mockito.mockStatic(ProgressCheckService.class)){
-            progressCheckServiceMockedStatic.when(() -> CategoryService.addCategory("test_cat_3")).thenReturn(0);
+        try (MockedStatic<CategoryService> categoryServiceMockedStatic = Mockito.mockStatic(CategoryService.class)){
+            categoryServiceMockedStatic.when(() -> CategoryService.addCategory("test_cat_3")).thenReturn(0);
             ExpenseTrackerController.addCategory("test_cat_3");
-            progressCheckServiceMockedStatic.verify(() -> CategoryService.addCategory("test_cat_3"), times(1));
+            categoryServiceMockedStatic.verify(() -> CategoryService.addCategory("test_cat_3"), times(1));
         }
     }
 
@@ -59,10 +59,10 @@ class ExpenseTrackerControllerTest {
 
     @Test
     void getCategories() {
-        try (MockedStatic<ProgressCheckService> progressCheckServiceMockedStatic = Mockito.mockStatic(ProgressCheckService.class)){
-            progressCheckServiceMockedStatic.when(()->CategoryService.getCategories(1)).thenReturn(categories);
+        try (MockedStatic<CategoryService> categoryServiceMockedStatic = Mockito.mockStatic(CategoryService.class)){
+            categoryServiceMockedStatic.when(()->CategoryService.getCategories(1)).thenReturn(categories);
             ExpenseTrackerController.getCategories(1);
-            progressCheckServiceMockedStatic.verify(()->CategoryService.getCategories(1), times(1));
+            categoryServiceMockedStatic.verify(()->CategoryService.getCategories(1), times(1));
         }
     }
 

@@ -103,4 +103,8 @@ public class CategoryRepository {
                 .build());
         return update ? "updated" : "added";
     }
+
+    public static void clear() {
+        categories.clear();
+    }
 }

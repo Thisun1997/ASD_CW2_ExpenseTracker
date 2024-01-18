@@ -66,7 +66,7 @@ class ProgressCheckServiceTest {
     @Order(1)
     void addCategoryBudget_add() {
         CategoryService.addCategory("test_cat_1");
-        assertEquals("added",ProgressCheckService.addCategoryBudget(0,1,100));
+        assertEquals("added",ProgressCheckService.addCategoryBudget(1,1,100));
     }
 
     @Test
