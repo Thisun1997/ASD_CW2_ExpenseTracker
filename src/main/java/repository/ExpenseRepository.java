@@ -1,0 +1,49 @@
+package repository;
+
+import model.Category;
+import model.Expense;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class ExpenseRepository {
+
+    private static final List<Expense> expenses = new ArrayList<>();
+
+    public static void addExpense(Expense expense) {
+        expenses.add(expense);
+    }
+
+    public static void deleteCategoryExpenses(int categoryId, int month) {
+        // Implementation to delete expenses associated with the category for the specified month
+        expenses.removeIf(expense ->
+                expense.getCategory().getCategoryId() == categoryId && expense.getMonth() == month);
+    }
+
+    public static List<Expense> getTransactions(int month) {
+        return expenses.stream().filter(expense -> expense.getMonth() == month).toList();
+    }
+
+    public static HashMap<Integer, List<Expense>> getTransactionsGroupedByCategory(List<Category> categories, int month) {
+        HashMap<Integer, List<Expense>> categoryMap = new HashMap<>();
+        for(Category category: categories){
+            categoryMap.putIfAbsent(category.getCategoryId(), new ArrayList<>());
+        }
+        for(Expense expense: getTransactions(month)){
+            int categoryId = expense.getCategory().getCategoryId();
+            categoryMap.get(categoryId).add(expense);
+        }
+        return categoryMap;
+    }
+
+    public static List<Expense> getTransactionsForCategory(int categoryId) {
+        List<Expense> categoryExpenses = new ArrayList<>();
+        for (Expense expense : expenses) {
+            if (expense.getCategory() != null && expense.getCategory().getCategoryId() == categoryId) {
+                categoryExpenses.add(expense);
+            }
+        }
+        return categoryExpenses;
+    }
+}
