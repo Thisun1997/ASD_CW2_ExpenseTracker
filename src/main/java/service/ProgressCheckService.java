@@ -46,14 +46,6 @@ public class ProgressCheckService {
         return "Expense added successfully";
     }
 
-    public static int addCategory(String name) {
-        return CategoryRepository.addCategory(new Category.CategoryBuilder(name, 0).build());
-    }
-
-    public static List<Category> getCategories(int month) {
-        return CategoryRepository.getCategories(month);
-    }
-
     public static String addCategoryBudget(int categoryId, int month, double budgetLimit) {
         return CategoryRepository.addCategoryBudget(categoryId, month, budgetLimit);
     }

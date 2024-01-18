@@ -1,6 +1,7 @@
 package repository;
 
 import model.Category;
+import util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,9 @@ public class CategoryRepository {
     private static final List<Category> categoryBudgetForMonths = new ArrayList<>();
 
     public static int addCategory(Category category) {
-        category.setCategoryId(categories.size());
+        category.setCategoryId(IdGenerator.getNextCategoryId());
         categories.add(category);
-        return categories.size()-1;
+        return category.getCategoryId();
     }
 
     public static Category getCategory(int categoryId) {
@@ -24,6 +25,37 @@ public class CategoryRepository {
         }
         return null;
     }
+
+    public static List<Category> getAllCategories() {
+        return categories;
+    }
+
+    public static void deleteCategory(int categoryId) {
+        Category categoryToRemove = null;
+
+        // Find the category to remove
+        for (Category category : categories) {
+            if (category.getCategoryId() == categoryId) {
+                categoryToRemove = category;
+                break;
+            }
+        }
+
+        // If category found, remove it
+        if (categoryToRemove != null) {
+            categories.remove(categoryToRemove);
+
+            // Remove associated budget categories
+            List<Category> budgetCategoriesToRemove = new ArrayList<>();
+            for (Category budgetCategory : categoryBudgetForMonths) {
+                if (budgetCategory.getCategoryId() == categoryId) {
+                    budgetCategoriesToRemove.add(budgetCategory);
+                }
+            }
+            categoryBudgetForMonths.removeAll(budgetCategoriesToRemove);
+        }
+    }
+
 
     public static Category getBudgetCategory(int categoryId, int month) {
         for (Category category: categoryBudgetForMonths) {

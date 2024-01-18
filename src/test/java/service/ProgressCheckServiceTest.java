@@ -63,22 +63,6 @@ class ProgressCheckServiceTest {
     }
 
     @Test
-    @Order(1)
-    void addCategory() {
-        assertEquals(1,ProgressCheckService.addCategory("test_cat_2"));
-    }
-
-    @Test
-    @Order(2)
-    void getCategories() {
-        List<Category> categories = ProgressCheckService.getCategories(1);
-        assertEquals(2,categories.size());
-        assertEquals("test_category",categories.get(0).getName());
-        assertEquals(0,categories.get(0).getCategoryId());
-        assertEquals(200,categories.get(0).getBudgetLimit());
-    }
-
-    @Test
     @Order(3)
     void addCategoryBudget_add() {
         assertEquals("added",ProgressCheckService.addCategoryBudget(1,1,100));

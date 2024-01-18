@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import service.ProgressCheckService;
+import service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +41,9 @@ class ExpenseTrackerControllerTest {
     @Test
     void addCategory() {
         try (MockedStatic<ProgressCheckService> progressCheckServiceMockedStatic = Mockito.mockStatic(ProgressCheckService.class)){
-            progressCheckServiceMockedStatic.when(() -> ProgressCheckService.addCategory("test_cat_3")).thenReturn(0);
+            progressCheckServiceMockedStatic.when(() -> CategoryService.addCategory("test_cat_3")).thenReturn(0);
             ExpenseTrackerController.addCategory("test_cat_3");
-            progressCheckServiceMockedStatic.verify(() -> ProgressCheckService.addCategory("test_cat_3"), times(1));
+            progressCheckServiceMockedStatic.verify(() -> CategoryService.addCategory("test_cat_3"), times(1));
         }
     }
 
@@ -60,9 +60,9 @@ class ExpenseTrackerControllerTest {
     @Test
     void getCategories() {
         try (MockedStatic<ProgressCheckService> progressCheckServiceMockedStatic = Mockito.mockStatic(ProgressCheckService.class)){
-            progressCheckServiceMockedStatic.when(()->ProgressCheckService.getCategories(1)).thenReturn(categories);
+            progressCheckServiceMockedStatic.when(()->CategoryService.getCategories(1)).thenReturn(categories);
             ExpenseTrackerController.getCategories(1);
-            progressCheckServiceMockedStatic.verify(()->ProgressCheckService.getCategories(1), times(1));
+            progressCheckServiceMockedStatic.verify(()->CategoryService.getCategories(1), times(1));
         }
     }
 
