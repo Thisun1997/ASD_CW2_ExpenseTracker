@@ -42,6 +42,19 @@ public class ExpenseTrackerController {
         }
     }
 
+    public static void deleteCategoryExpense(int categoryId, int month) {
+        try {
+            CategoryService.deleteCategoryExpenses(categoryId, month);
+            System.out.println("Delete Expense for the Category Successfully");
+        } catch (CategoryException.CategoryNotFoundException | CategoryException.CategoryHasExpensesException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (ExpenseTrackerException e) {
+            System.out.println("Error deleting category Expenses: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error deleting category expenses");
+        }
+    }
+
 
     public static void getProgress(int month) {
         System.out.println("Category Name | Budget Limit | Spent Amount");

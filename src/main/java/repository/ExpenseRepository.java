@@ -15,6 +15,12 @@ public class ExpenseRepository {
         expenses.add(expense);
     }
 
+    public static void deleteCategoryExpenses(int categoryId, int month) {
+        // Implementation to delete expenses associated with the category for the specified month
+        expenses.removeIf(expense ->
+                expense.getCategory().getCategoryId() == categoryId && expense.getMonth() == month);
+    }
+
     public static List<Expense> getTransactions(int month) {
         return expenses.stream().filter(expense -> expense.getMonth() == month).toList();
     }

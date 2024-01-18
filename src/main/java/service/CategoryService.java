@@ -52,4 +52,20 @@ public class CategoryService {
             throw new CategoryException.CategoryNotFoundException("Category not found");
         }
     }
+
+    public static void deleteCategoryExpenses(int categoryId, int month) {
+        try {
+            Category category = CategoryRepository.getCategory(categoryId);
+            if (category != null) {
+                // Delete the category expenses for the specified month
+                ExpenseRepository.deleteCategoryExpenses(categoryId, month);
+            } else {
+                throw new CategoryException.CategoryNotFoundException("Category not found");
+            }
+        } catch (CategoryException.CategoryNotFoundException e) {
+            throw e;  // Re-throwing the specific exception for no category found
+        } catch (Exception e) {
+            throw new ExpenseTrackerException("Error deleting category expenses", e);
+        }
+    }
 }

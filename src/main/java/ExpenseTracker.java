@@ -18,9 +18,10 @@ public class ExpenseTracker {
                 "2. Edit category \n" +
                 "3. Delete category \n" +
                 "4. Add expense \n" +
-                "5. Check progress \n" +
-                "6. Add/Edit Category Budget Limit \n" +
-                "7. Exit");
+                "5. Delete expense \n" +
+                "6. Check progress \n" +
+                "7. Add/Edit Category Budget Limit \n" +
+                "8. Exit");
 
         while (true) {
             for (int i = 0; i < 100; i++) {
@@ -84,9 +85,20 @@ public class ExpenseTracker {
                 case 5 -> {
                     System.out.print("Enter Month: ");
                     int month = Integer.parseInt(scanner.nextLine());
-                    ExpenseTrackerController.getProgress(month);
+                    System.out.print("""
+                            Enter Category Id from the available categories below\s
+                             Category Id | Category Name | Budget Limit\s
+                            """);
+                    ExpenseTrackerController.getCategories(month);
+                    int categoryId = Integer.parseInt(scanner.nextLine());
+                    ExpenseTrackerController.deleteCategoryExpense(categoryId, month);
                 }
                 case 6 -> {
+                    System.out.print("Enter Month: ");
+                    int month = Integer.parseInt(scanner.nextLine());
+                    ExpenseTrackerController.getProgress(month);
+                }
+                case 7 -> {
                     System.out.print("Enter Month: ");
                     int month = Integer.parseInt(scanner.nextLine());
                     System.out.print("""
@@ -99,7 +111,7 @@ public class ExpenseTracker {
                     double budgetLimit = Double.parseDouble(scanner.nextLine());
                     ExpenseTrackerController.addCategoryBudget(categoryId, month, budgetLimit);
                 }
-                case 7 -> {
+                case 8 -> {
                     System.out.println("Exiting the application. Goodbye!");
                     // Closing the scanner
                     scanner.close();
