@@ -63,19 +63,20 @@ class ProgressCheckServiceTest {
     }
 
     @Test
-    @Order(3)
+    @Order(1)
     void addCategoryBudget_add() {
-        assertEquals("added",ProgressCheckService.addCategoryBudget(1,1,100));
+        CategoryService.addCategory("test_cat_1");
+        assertEquals("added",ProgressCheckService.addCategoryBudget(0,1,100));
     }
 
     @Test
-    @Order(4)
+    @Order(2)
     void addCategoryBudget_update() {
-        assertEquals("updated",ProgressCheckService.addCategoryBudget(1,1,200));
+        assertEquals("updated",ProgressCheckService.addCategoryBudget(0,1,200));
     }
 
     @Test
-    @Order(5)
+    @Order(3)
     void addCategoryBudget_category_not_exist() {
         assertEquals("Category doesn't exist",ProgressCheckService.addCategoryBudget(2,1,100));
     }
