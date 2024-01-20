@@ -1,16 +1,14 @@
 package model;
 
-public class Category {
+public abstract class Category {
 
-    private String name;
-    private int categoryId;
-    private double budgetLimit;
+    protected String name;
+    protected int categoryId;
 
 
-    public Category(String name, int categoryId, double budgetLimit) {
+    public Category(String name, int categoryId) {
         this.name = name;
         this.categoryId = categoryId;
-        this.budgetLimit = budgetLimit;
     }
 
     public String getName() {
@@ -29,11 +27,5 @@ public class Category {
         this.categoryId = categoryId;
     }
 
-    public double getBudgetLimit() {
-        return budgetLimit;
-    }
-
-    public void setBudgetLimit(double budgetLimit) {
-        this.budgetLimit = budgetLimit;
-    }
+    public abstract String toString();
 }
