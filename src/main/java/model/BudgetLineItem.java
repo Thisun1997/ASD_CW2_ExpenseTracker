@@ -7,7 +7,7 @@ import java.util.List;
 public class BudgetLineItem implements BudgetComponent {
 
     private String lineItemName;
-    private double limit;
+    private BigDecimal limit;
     private final List<BudgetComponent> components = new ArrayList<>();
 
     @Override
@@ -36,11 +36,16 @@ public class BudgetLineItem implements BudgetComponent {
         this.lineItemName = lineItemName;
     }
 
-    public double getLimit() {
+    public BigDecimal getLimit() {
         return limit;
     }
 
-    public void setLimit(double limit) {
+    public void setLimit(BigDecimal limit) {
         this.limit = limit;
+    }
+
+    @Override
+    public String toString() {
+        return lineItemName + "\t| " + getTotal() + "\t| " + limit;
     }
 }

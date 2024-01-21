@@ -135,6 +135,44 @@ public class MainController {
         }
     }
 
+    private static void handleProgress(){
+        int subChoice;
+        System.out.println("*****Budget*****");
+        printSeparator();
+        initializeController(2);
+        boolean exitLoop = false;
+        while(!exitLoop){
+            printSeparator();
+            System.out.println("1: Set Budget\t2: Check Progress\t3: Exit\t");
+            subChoice = getCommand(scanner);
+            switch (subChoice) {
+                case 1 -> {
+                    setBudget();
+                }
+                case 2 -> {
+                    getProgress();
+                }
+                case 3 -> {
+                    exitLoop = true;
+                }
+                default -> {
+                    System.out.println("Invalid choice. Exiting to home.");
+                    exitLoop = true;
+                }
+
+            }
+        }
+
+    }
+
+    private static void setBudget(){
+        controller.setBudget();
+    }
+
+    private static void getProgress(){
+        controller.showProgress();
+    }
+
     private static void addTransaction() {
         int subChoice;
         System.out.println("*****Select the Transaction Type*****");
@@ -165,10 +203,6 @@ public class MainController {
 
     private static void showTransactions() {
         controller.showTransactions();
-    }
-
-    private static void handleProgress() {
-
     }
 
     private static void changeYearMonth() {

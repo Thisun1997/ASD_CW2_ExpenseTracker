@@ -22,15 +22,15 @@ public class CategoryRepository {
         expenseCategories.add(category);
         return expenseCategories.size()-1;
     }
-//
-//    public static Category getCategory(int categoryId) {
-//        for (Category category: categories) {
-//            if (category.getCategoryId() == categoryId) {
-//                return category;
-//            }
-//        }
-//        return null;
-//    }
+
+    public static Category getCategory(String categoryName) {
+        for (Category category: expenseCategories) {
+            if (category.getName().equals(categoryName)) {
+                return category;
+            }
+        }
+        return null;
+    }
 
     public static List<Category> getIncomeCategories() {
         return incomeCategories;
