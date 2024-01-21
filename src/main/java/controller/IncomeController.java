@@ -2,7 +2,10 @@ package controller;
 
 import model.Category;
 import service.IncomeCategoryService;
+import service.TransactionService;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Scanner;
 
@@ -29,10 +32,24 @@ public class IncomeController extends Controller{
 
     @Override
     public int addCategory() {
-        System.out.print("Please enter category name:");
+        System.out.print("Please enter category name: ");
         String name = scanner.nextLine();
         return IncomeCategoryService.addCategory(name);
     }
 
+    @Override
+    public Category getCategoryById(int categoryId) {
+        return IncomeCategoryService.getCategoryById(categoryId);
+    }
 
+    @Override
+    public void showTransactions() {
+
+    }
+
+    @Override
+    public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {
+        TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, false);
+        System.out.println("Income Transaction added successfully!");
+    }
 }

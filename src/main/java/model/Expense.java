@@ -1,31 +1,19 @@
 package model;
 
-import model.BudgetComponent;
+import java.math.BigDecimal;
 
-public class Expense implements BudgetComponent {
-
-    //required
-    private double amount;
+public class Expense extends Transaction implements BudgetComponent {
 
     //optional
-    private final Category category;
+    private final ExpenseCategory category;
 
     @Override
-    public double getTotal() {
-        return amount;
+    public void addExpense(BigDecimal amount) {
     }
 
     @Override
-    public void addExpense(double amount) {
-
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public BigDecimal getTotal() {
+        return this.getAmount();
     }
 
     public Category getCategory() {
@@ -33,24 +21,42 @@ public class Expense implements BudgetComponent {
     }
 
     private Expense(ExpenseBuilder builder){
-        this.amount = builder.amount;
+        super(builder.date, builder.amount, builder.note, builder.isRecurring);
         this.category = builder.category;
     }
 
     public static class ExpenseBuilder{
 
         //required
-        private double amount;
+        private BigDecimal amount;
 
         //optional
-        private Category category;
+        private ExpenseCategory category;
+        private String date;
+        private String note;
+        private boolean isRecurring;
 
-        public ExpenseBuilder(double amount) {
+
+        public ExpenseBuilder(BigDecimal amount) {
             this.amount = amount;
         }
 
-        public ExpenseBuilder setCategory(Category category) {
+        public ExpenseBuilder setCategory(ExpenseCategory category) {
             this.category = category;
+            return this;
+        }
+
+        public ExpenseBuilder setDate(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public ExpenseBuilder setNote(String note) {
+            this.note = note;
+            return this;
+        }
+        public ExpenseBuilder setIsRecurring(boolean isRecurring) {
+            this.isRecurring = isRecurring;
             return this;
         }
 

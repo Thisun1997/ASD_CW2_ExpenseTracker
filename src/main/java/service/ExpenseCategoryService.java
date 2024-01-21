@@ -20,4 +20,14 @@ public class ExpenseCategoryService{
     public static int addCategory(String name, BigDecimal budget) {
         return CategoryRepository.addCategory(new ExpenseCategory(name,0,budget));
     }
+
+    public static Category getCategoryById(int categoryId) {
+        for (Category category : getCategories()) {
+            if (category.getCategoryId() == categoryId) {
+                return category;
+            }
+        }
+        System.out.println("Expense category not found with ID: " + categoryId);
+        return null;
+    }
 }
