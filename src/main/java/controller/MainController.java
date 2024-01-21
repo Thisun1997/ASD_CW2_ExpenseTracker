@@ -143,8 +143,14 @@ public class MainController {
         printSeparator();
         initializeController(subChoice);
 
-        System.out.println("Please enter the category id");
+        if (controller.getCategories().isEmpty()) {
+            System.out.println("No categories available. Exiting to previous menu.");
+            return;  // Go back to the previous menu
+        }
+
         controller.showCategories();
+
+        System.out.println("Please enter the category id: ");
         int choice = Integer.parseInt(scanner.nextLine());
         Category selectedCategory = controller.getCategoryById(choice);
 
@@ -154,7 +160,7 @@ public class MainController {
         System.out.print("Enter note: ");
         String note = scanner.nextLine();
 
-        System.out.println("Enter the transaction Date: ");
+        System.out.print("Enter the transaction Date: ");
         String currentDate = scanner.nextLine();
 
         System.out.print("Is it a recurring transaction? (true/false): ");
@@ -164,7 +170,7 @@ public class MainController {
     }
 
     private static void showTransactions() {
-        controller.showTransactions();
+        CommonController.showTransactions(yearMonth);
     }
 
     private static void handleProgress() {

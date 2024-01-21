@@ -20,6 +20,11 @@ public class Expense extends Transaction implements BudgetComponent {
         return category;
     }
 
+    @Override
+    protected String getCategoryString() {
+        return "EXPENSE - " + category.getName();
+    }
+
     private Expense(ExpenseBuilder builder){
         super(builder.date, builder.amount, builder.note, builder.isRecurring);
         this.category = builder.category;

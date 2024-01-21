@@ -47,4 +47,11 @@ public abstract class Transaction {
     public void setRecurring(boolean recurring) {
         isRecurring = recurring;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Date: %s, Amount: %s, Note: %s, Category: %s, InRecurring: %s", date, amount, note, getCategoryString(), isRecurring);
+    }
+
+    protected abstract String getCategoryString();
 }

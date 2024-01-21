@@ -10,4 +10,8 @@ public class Income extends Transaction{
         this.category = category;
     }
 
+    @Override
+    protected String getCategoryString() {
+        return "INCOME - " + category.getName();
+    }
 }
