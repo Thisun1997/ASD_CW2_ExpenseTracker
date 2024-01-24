@@ -17,8 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CategoryRepositoryTest {
 
+    static YearMonth yearMonth = YearMonth.of(2024,1);
     static String expenseCategoryName = "test_category";
-    static ExpenseCategory category = new ExpenseCategory(expenseCategoryName,0, BigDecimal.valueOf(100));
+    static ExpenseCategory category = new ExpenseCategory(expenseCategoryName,0, BigDecimal.valueOf(100), yearMonth);
 
     @Test
     @Order(1)
@@ -28,8 +29,9 @@ class CategoryRepositoryTest {
 
     @Test
     void getExpenseCategory_existing() {
-        Category categoryFetched = CategoryRepository.getCategory(expenseCategoryName);
+        ExpenseCategory categoryFetched = (ExpenseCategory) CategoryRepository.getCategory(expenseCategoryName);
         assertEquals(expenseCategoryName,categoryFetched.getName());
+        assertEquals(BigDecimal.valueOf(100),categoryFetched.getBudgetLimit(yearMonth));
     }
 
     @Test
@@ -43,5 +45,6 @@ class CategoryRepositoryTest {
         List<Category> categories = CategoryRepository.getExpenseCategories();
         assertEquals(1,categories.size());
         assertEquals(expenseCategoryName,categories.get(0).getName());
+        assertEquals(BigDecimal.valueOf(100),((ExpenseCategory)categories.get(0)).getBudgetLimit(yearMonth));
     }
 }

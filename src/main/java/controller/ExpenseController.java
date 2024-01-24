@@ -28,7 +28,7 @@ public class ExpenseController extends Controller{
     public void showCategories() {
         System.out.println("*************** Expense Categories ***************");
         for(Category cat: ExpenseCategoryService.getCategories()){
-            System.out.println(cat.toString());
+            System.out.println(((ExpenseCategory)cat).toString(yearMonth));
         }
     }
 
@@ -36,9 +36,9 @@ public class ExpenseController extends Controller{
     public int addCategory() {
         System.out.print("Please enter category name: ");
         String name = scanner.nextLine();
-        System.out.print("Enter Budged for "+name+":");
+        System.out.print("Enter Budged for "+name+": ");
         BigDecimal budget = BigDecimal.valueOf(Double.parseDouble(scanner.nextLine()));
-        return ExpenseCategoryService.addCategory(name,budget);
+        return ExpenseCategoryService.addCategory(name,budget,yearMonth);
     }
 
     @Override
@@ -49,6 +49,12 @@ public class ExpenseController extends Controller{
     @Override
     public void showTransactions() {
     }
+
+    @Override
+    public List<Category> getCategories() {
+        return ExpenseCategoryService.getCategories();
+    }
+
 
     @Override
     public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {

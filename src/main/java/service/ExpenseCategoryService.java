@@ -17,8 +17,8 @@ public class ExpenseCategoryService{
         return CategoryRepository.getExpenseCategories();
     }
 
-    public static int addCategory(String name, BigDecimal budget) {
-        return CategoryRepository.addCategory(new ExpenseCategory(name,0,budget));
+    public static int addCategory(String name, BigDecimal budget, YearMonth yearMonth) {
+        return CategoryRepository.addCategory(new ExpenseCategory(name,0,budget,yearMonth));
     }
 
     public static Category getCategoryById(int categoryId) {

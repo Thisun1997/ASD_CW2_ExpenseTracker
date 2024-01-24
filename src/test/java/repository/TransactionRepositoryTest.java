@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransactionRepositoryTest {
 
     static String expenseCategoryName = "test_category";
-    static ExpenseCategory category = new ExpenseCategory(expenseCategoryName,0, BigDecimal.valueOf(100));
+    static YearMonth yearMonth= YearMonth.of(2024,1);
+    static ExpenseCategory category = new ExpenseCategory(expenseCategoryName,0, BigDecimal.valueOf(100), yearMonth);
     static Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
     static List<Category> categories = Collections.singletonList(category);
-    static YearMonth yearMonth= YearMonth.of(2024,1);
 
     @Test
     void addExpense() {

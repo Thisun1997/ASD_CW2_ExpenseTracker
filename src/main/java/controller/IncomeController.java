@@ -7,6 +7,7 @@ import service.TransactionService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Scanner;
 
 public class IncomeController extends Controller{
@@ -46,6 +47,12 @@ public class IncomeController extends Controller{
     public void showTransactions() {
 
     }
+
+    @Override
+    public List<Category> getCategories() {
+        return IncomeCategoryService.getCategories();
+    }
+
 
     @Override
     public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {

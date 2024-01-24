@@ -1,5 +1,7 @@
 package model;
 
+import java.time.YearMonth;
+
 public abstract class Category {
 
     protected String name;
@@ -27,5 +29,4 @@ public abstract class Category {
         this.categoryId = categoryId;
     }
 
-    public abstract String toString();
 }

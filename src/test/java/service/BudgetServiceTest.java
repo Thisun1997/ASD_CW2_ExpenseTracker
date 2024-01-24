@@ -23,18 +23,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class BudgetServiceTest {
 
     static String categoryName = "test_category";
-    static ExpenseCategory category = new ExpenseCategory(categoryName,0, BigDecimal.valueOf(100));
+    static YearMonth yearMonth = YearMonth.of(2024,1);
+    static ExpenseCategory category = new ExpenseCategory(categoryName,0, BigDecimal.valueOf(100), yearMonth);
     static Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
     static List<Expense> expenses = Collections.singletonList(expense);
     static List<Category> budgetCategories = Collections.singletonList(category);
     static HashMap<String, List<Expense>> categoryMap = new HashMap<>();
-    static YearMonth yearMonth = YearMonth.of(2024,1);
     static BigDecimal budgetAmount = BigDecimal.valueOf(1000);
 
     @BeforeAll
     static void init() {
         categoryMap.put(categoryName,expenses);
-        category.setBudgetLimit(yearMonth, BigDecimal.valueOf(100));
     }
 
     @Test
