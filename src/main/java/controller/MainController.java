@@ -16,7 +16,7 @@ public class MainController {
     private static Controller controller;
     private static YearMonth yearMonth;
 
-    private static void initialize(){
+    private static void initialize() {
         yearMonth = YearMonth.now();
         scanner = new Scanner(System.in);
     }
@@ -73,7 +73,7 @@ public class MainController {
         }
     }
 
-    private static void handleCategories(){
+    private static void handleCategories() {
         int subChoice;
         Utils.printSeparator();
         System.out.println("*****Categories*****");
@@ -242,14 +242,14 @@ public class MainController {
     private static void deleteTransaction() {
         int subChoice;
         Utils.printSeparator();
-
-        if(CommonController.getTransactions(yearMonth).isEmpty()) {
+        List<Transaction> transactionList = CommonController.getTransactions(yearMonth);
+        if(transactionList.isEmpty()) {
             System.out.println("No Transactions available. Exiting to previous menu.");
             return;  // Go back to the previous menu
         }
         showTransactions();
         System.out.println("*****Select the Transaction Id You want to delete*****");
-        subChoice = Utils.getCommand(scanner,"Enter Transaction Id:",1,4); //
+        subChoice = Utils.getCommand(scanner,"Enter Transaction Id:",1,transactionList.size()); //
         CommonController.deleteTransaction(subChoice, yearMonth);
     }
 

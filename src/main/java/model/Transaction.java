@@ -71,6 +71,7 @@ public abstract class Transaction {
     }
 
     protected abstract String getCategoryString();
+    public abstract Category getCategory();
 
     private static String generateUniqueId() {
         return String.valueOf(uniqueIdCounter.getAndIncrement());

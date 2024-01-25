@@ -8,9 +8,9 @@ import java.time.YearMonth;
 import java.util.List;
 
 public class ExpenseCategoryService{
-    private static List<ExpenseCategory> expenseCategories;
+    private static List<Category> expenseCategories;
 
-    public static  List<ExpenseCategory> getCategories() {
+    public static  List<Category> getCategories() {
         expenseCategories = CategoryRepository.getExpenseCategories();
         return expenseCategories;
     }
@@ -22,19 +22,19 @@ public class ExpenseCategoryService{
         return expenseCategories.size();
     }
 
-    public static ExpenseCategory getCategory(int index){ return expenseCategories.get(index);}
+    public static Category getCategory(int index){ return expenseCategories.get(index);}
 
     public static void deleteCategory(int index){
-        CategoryRepository.deleteCategory(expenseCategories.get(index));
+        CategoryRepository.deleteCategory((ExpenseCategory) expenseCategories.get(index));
         expenseCategories = CategoryRepository.getExpenseCategories();
     }
 
     public static void updateExpenseCategory(int index, String name) {
-        CategoryRepository.updateExpenseCategory(expenseCategories.get(index),name);
+        CategoryRepository.updateExpenseCategory((ExpenseCategory) expenseCategories.get(index),name);
         expenseCategories = CategoryRepository.getExpenseCategories();
     }
     public static void updateExpenseCategory(int index, YearMonth yearMonth, BigDecimal budget) {
-        CategoryRepository.updateExpenseCategory(expenseCategories.get(index), yearMonth, budget);
+        CategoryRepository.updateExpenseCategory((ExpenseCategory) expenseCategories.get(index), yearMonth, budget);
         expenseCategories = CategoryRepository.getExpenseCategories();
     }
 }

@@ -16,7 +16,7 @@ public abstract class Controller {
     protected Scanner scanner;
     protected YearMonth yearMonth;
 
-    public Controller(Scanner scanner, YearMonth yearMonth){
+    public Controller(Scanner scanner, YearMonth yearMonth) {
         this.scanner = scanner;
         this.yearMonth = yearMonth;
     }

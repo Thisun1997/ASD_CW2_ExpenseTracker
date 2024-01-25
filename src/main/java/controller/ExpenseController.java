@@ -8,6 +8,7 @@ import service.TransactionService;
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class ExpenseController extends Controller{
@@ -43,7 +44,7 @@ public class ExpenseController extends Controller{
     public String addCategory() {
         System.out.print("Please enter category name:");
         String name = scanner.nextLine();
-        System.out.print("Enter Budged for "+name+":");
+        System.out.print("Enter Budget for "+name+": ");
         BigDecimal budget = BigDecimal.valueOf(Double.parseDouble(scanner.nextLine()));
         ExpenseCategoryService.addCategory(name,yearMonth,budget);
         return name;
