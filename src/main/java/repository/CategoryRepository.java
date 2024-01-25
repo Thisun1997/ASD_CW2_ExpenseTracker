@@ -11,8 +11,8 @@ import java.util.List;
 
 public class CategoryRepository {
 
-    private static final List<Category> incomeCategories = new ArrayList<>();
-    private static final List<Category> expenseCategories = new ArrayList<>();
+    private static final List<IncomeCategory> incomeCategories = new ArrayList<>();
+    private static final List<ExpenseCategory> expenseCategories = new ArrayList<>();
 
     public static void addCategory(IncomeCategory category) {
         incomeCategories.add(category);
@@ -36,10 +36,10 @@ public class CategoryRepository {
         incomeCategories.remove(incomeCategory);
     }
 
-    public static List<Category> getIncomeCategories() {
+    public static List<IncomeCategory> getIncomeCategories() {
         return incomeCategories;
     }
-    public static List<Category> getExpenseCategories() {
+    public static List<ExpenseCategory> getExpenseCategories() {
         return expenseCategories;
     }
 
