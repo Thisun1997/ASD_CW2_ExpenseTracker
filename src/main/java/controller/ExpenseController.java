@@ -47,14 +47,14 @@ public class ExpenseController extends Controller{
     }
 
     @Override
-    public void showTransactions() {
-    }
-
-    @Override
     public List<Category> getCategories() {
         return ExpenseCategoryService.getCategories();
     }
 
+    @Override
+    public void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring) {
+        TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate,isRecurring, true);
+    }
 
     @Override
     public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {
