@@ -1,6 +1,8 @@
 package model;
 
+import java.math.BigDecimal;
+
 public interface BudgetComponent {
-    double getTotal();
-    void addExpense(double amount);
+    BigDecimal getTotal();
+    void addExpense(BigDecimal amount);
 }

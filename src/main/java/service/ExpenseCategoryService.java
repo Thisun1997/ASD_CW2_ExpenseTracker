@@ -38,4 +38,14 @@ public class ExpenseCategoryService{
         CategoryRepository.updateExpenseCategory(expenseCategories.get(index), yearMonth, budget);
         expenseCategories = CategoryRepository.getExpenseCategories();
     }
+
+    public static Category getCategoryById(int categoryId) {
+        for (Category category : getCategories()) {
+            if (category.getCategoryId() == categoryId) {
+                return category;
+            }
+        }
+        System.out.println("Expense category not found with ID: " + categoryId);
+        return null;
+    }
 }

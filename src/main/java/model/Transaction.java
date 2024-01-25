@@ -1,60 +1,78 @@
 package model;
 
-public class Transaction implements BudgetComponent {
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicLong;
 
-    //required
-    private double amount;
+public abstract class Transaction {
+    private static final AtomicLong uniqueIdCounter = new AtomicLong(1);
 
-    //optional
-    private final Category category;
+    private final String uniqueId;
+    private String date;
+    private BigDecimal amount;
+    private String note;
+    private boolean isRecurring;
+    private String recurringId;
 
-    @Override
-    public double getTotal() {
+    public Transaction(String date, BigDecimal amount, String note, boolean isRecurring, String recurringId){
+        this.uniqueId = generateUniqueId();
+        this.date = date;
+        this.amount = amount;
+        this.note = note;
+        this.isRecurring = isRecurring;
+        this.recurringId = recurringId;
+    }
+
+    public String getId() { return uniqueId; }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    @Override
-    public void addExpense(double amount) {
-
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getNote() {
+        return note;
     }
 
-    private Transaction(TransactionBuilder builder){
-        this.amount = builder.amount;
-        this.category = builder.category;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public static class TransactionBuilder{
+    public boolean isRecurring() {
+        return isRecurring;
+    }
 
-        //required
-        private double amount;
+    public void setRecurring(boolean recurring) {
+        isRecurring = recurring;
+    }
 
-        //optional
-        private Category category;
+    public String getRecurringId() {
+        return recurringId;
+    }
 
-        public TransactionBuilder(double amount) {
-            this.amount = amount;
-        }
+    public void setRecurringId(String recurringId) {
+        this.recurringId = recurringId;
+    }
 
-        public TransactionBuilder setCategory(Category category) {
-            this.category = category;
-            return this;
-        }
+    @Override
+    public String toString() {
+        return String.format("Id: %s, Date: %s, Amount: %s, Note: %s, Category: %s, InRecurring: %s",uniqueId, date, amount, note, getCategoryString(), isRecurring);
+    }
 
-        public Transaction build(){
-            return new Transaction(this);
-        }
+    protected abstract String getCategoryString();
 
+    private static String generateUniqueId() {
+        return String.valueOf(uniqueIdCounter.getAndIncrement());
     }
 }

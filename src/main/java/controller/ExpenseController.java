@@ -2,6 +2,7 @@ package controller;
 
 import model.ExpenseCategory;
 import service.ExpenseCategoryService;
+import service.IncomeCategoryService;
 import service.TransactionService;
 
 import java.math.BigDecimal;
@@ -38,7 +39,7 @@ public class ExpenseController extends Controller{
     public String addCategory() {
         System.out.print("Please enter category name:");
         String name = scanner.nextLine();
-        System.out.print("Enter Budged for "+name+":");
+        System.out.print("Enter Budged for "+name+": ");
         BigDecimal budget = BigDecimal.valueOf(Double.parseDouble(scanner.nextLine()));
         ExpenseCategoryService.addCategory(name,yearMonth,budget);
         return name;
@@ -92,5 +93,19 @@ public class ExpenseController extends Controller{
         }
     }
 
+    @Override
+    public Category getCategoryById(int categoryId) {
+        return ExpenseCategoryService.getCategoryById(categoryId);
+    }
 
+    @Override
+    public void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring) {
+        TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate,isRecurring, true);
+    }
+
+    @Override
+    public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {
+        TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, true);
+        System.out.println("Expense Transaction added successfully!");
+    }
 }

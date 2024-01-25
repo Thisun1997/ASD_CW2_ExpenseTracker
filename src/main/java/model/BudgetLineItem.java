@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,10 @@ public class BudgetLineItem implements BudgetComponent {
     private final List<BudgetComponent> components = new ArrayList<>();
 
     @Override
-    public double getTotal() {
-        double total = 0;
+    public BigDecimal getTotal() {
+        BigDecimal total = BigDecimal.valueOf(0);
         for (BudgetComponent component : components) {
-            total += component.getTotal();
+            total = total.add(component.getTotal());
         }
         return total;
     }
@@ -22,8 +23,8 @@ public class BudgetLineItem implements BudgetComponent {
         components.add(component);
     }
 
-    public void addExpense(double amount) {
-        Transaction expense = new Transaction.TransactionBuilder(amount).build();
+    public void addExpense(BigDecimal amount) {
+        Expense expense = new Expense.ExpenseBuilder(amount).build();
         components.add(expense);
     }
 
