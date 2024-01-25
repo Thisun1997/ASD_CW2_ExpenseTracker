@@ -2,7 +2,7 @@ package service;
 
 import model.BudgetLineItem;
 import model.Category;
-import model.Expense;
+import model.Transaction;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProgressCheckServiceTest {
 
     static Category category = new Category.CategoryBuilder("test_category",0).setMonth(1).setBudgetLimit(100).build();
-    static Expense expense = new Expense.ExpenseBuilder(10).setCategory(category).build();
-    static List<Expense> expenses = Collections.singletonList(expense);
+    static Transaction expense = new Transaction.ExpenseBuilder(10).setCategory(category).build();
+    static List<Transaction> expenses = Collections.singletonList(expense);
     static List<Category> budgetCategories = Collections.singletonList(category);
-    static HashMap<Integer, List<Expense>> categoryMap = new HashMap<>();
+    static HashMap<Integer, List<Transaction>> categoryMap = new HashMap<>();
 
     @BeforeAll
     static void init() {

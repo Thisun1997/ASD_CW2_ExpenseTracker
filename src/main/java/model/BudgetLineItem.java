@@ -23,7 +23,7 @@ public class BudgetLineItem implements BudgetComponent {
     }
 
     public void addExpense(double amount) {
-        Expense expense = new Expense.ExpenseBuilder(amount).build();
+        Transaction expense = new Transaction.TransactionBuilder(amount).build();
         components.add(expense);
     }
 

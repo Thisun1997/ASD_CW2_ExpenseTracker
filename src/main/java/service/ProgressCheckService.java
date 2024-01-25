@@ -1,16 +1,5 @@
 package service;
 
-import model.Category;
-import model.BudgetLineItem;
-import model.Expense;
-import model.ExpenseCategory;
-import repository.CategoryRepository;
-import repository.TransactionRepository;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class ProgressCheckService {
 //    public static List<BudgetLineItem> getProgress() {
 //        List<BudgetLineItem> lineItems = new ArrayList<>();

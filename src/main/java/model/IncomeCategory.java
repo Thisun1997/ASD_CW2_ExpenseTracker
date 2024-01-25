@@ -1,13 +1,9 @@
 package model;
 
 public class IncomeCategory extends Category{
-    public IncomeCategory(String name, int categoryId){
-        super(name,categoryId);
+    public IncomeCategory(String name){
+        super(name);
     }
 
-    @Override
-    public String toString() {
-        return categoryId + "\t| " + name;
-    }
 
 }

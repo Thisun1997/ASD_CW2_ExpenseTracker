@@ -1,8 +1,6 @@
 package model;
 
-import model.BudgetComponent;
-
-public class Expense implements BudgetComponent {
+public class Transaction implements BudgetComponent {
 
     //required
     private double amount;
@@ -32,12 +30,12 @@ public class Expense implements BudgetComponent {
         return category;
     }
 
-    private Expense(ExpenseBuilder builder){
+    private Transaction(TransactionBuilder builder){
         this.amount = builder.amount;
         this.category = builder.category;
     }
 
-    public static class ExpenseBuilder{
+    public static class TransactionBuilder{
 
         //required
         private double amount;
@@ -45,17 +43,17 @@ public class Expense implements BudgetComponent {
         //optional
         private Category category;
 
-        public ExpenseBuilder(double amount) {
+        public TransactionBuilder(double amount) {
             this.amount = amount;
         }
 
-        public ExpenseBuilder setCategory(Category category) {
+        public TransactionBuilder setCategory(Category category) {
             this.category = category;
             return this;
         }
 
-        public Expense build(){
-            return new Expense(this);
+        public Transaction build(){
+            return new Transaction(this);
         }
 
     }

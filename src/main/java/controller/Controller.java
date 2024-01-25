@@ -1,10 +1,6 @@
 package controller;
 
-import model.Category;
-
-import java.math.BigDecimal;
 import java.time.YearMonth;
-import java.util.List;
 import java.util.Scanner;
 
 public abstract class Controller {
@@ -16,5 +12,7 @@ public abstract class Controller {
         this.yearMonth = yearMonth;
     }
     public abstract void showCategories();
-    public abstract int addCategory();
+    public abstract String addCategory();
+    public abstract void deleteCategory();
+    public abstract void updateCategory();
 }
