@@ -44,13 +44,13 @@ public class IncomeController extends Controller{
     }
 
     @Override
-    public void showTransactions() {
-
+    public List<Category> getCategories() {
+        return IncomeCategoryService.getCategories();
     }
 
     @Override
-    public List<Category> getCategories() {
-        return IncomeCategoryService.getCategories();
+    public void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring) {
+        TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate,isRecurring, false);
     }
 
 

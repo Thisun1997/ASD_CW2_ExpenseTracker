@@ -2,19 +2,28 @@ package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class Transaction {
+    private static final AtomicLong uniqueIdCounter = new AtomicLong(1);
+
+    private final String uniqueId;
     private String date;
     private BigDecimal amount;
     private String note;
     private boolean isRecurring;
+    private String recurringId;
 
-    public Transaction(String date, BigDecimal amount, String note, boolean isRecurring){
+    public Transaction(String date, BigDecimal amount, String note, boolean isRecurring, String recurringId){
+        this.uniqueId = generateUniqueId();
         this.date = date;
         this.amount = amount;
         this.note = note;
         this.isRecurring = isRecurring;
+        this.recurringId = recurringId;
     }
+
+    public String getId() { return uniqueId; }
 
     public String getDate() {
         return date;
@@ -48,10 +57,22 @@ public abstract class Transaction {
         isRecurring = recurring;
     }
 
+    public String getRecurringId() {
+        return recurringId;
+    }
+
+    public void setRecurringId(String recurringId) {
+        this.recurringId = recurringId;
+    }
+
     @Override
     public String toString() {
-        return String.format("Date: %s, Amount: %s, Note: %s, Category: %s, InRecurring: %s", date, amount, note, getCategoryString(), isRecurring);
+        return String.format("Id: %s, Date: %s, Amount: %s, Note: %s, Category: %s, InRecurring: %s",uniqueId, date, amount, note, getCategoryString(), isRecurring);
     }
 
     protected abstract String getCategoryString();
+
+    private static String generateUniqueId() {
+        return String.valueOf(uniqueIdCounter.getAndIncrement());
+    }
 }

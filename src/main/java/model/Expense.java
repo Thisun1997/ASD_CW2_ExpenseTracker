@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Expense extends Transaction implements BudgetComponent {
 
     //optional
-    private final ExpenseCategory category;
+    private ExpenseCategory category;
 
     @Override
     public void addExpense(BigDecimal amount) {
@@ -20,13 +20,17 @@ public class Expense extends Transaction implements BudgetComponent {
         return category;
     }
 
+    public void setCategory(ExpenseCategory category){
+        this.category = category;
+    }
+
     @Override
     protected String getCategoryString() {
         return "EXPENSE - " + category.getName();
     }
 
     private Expense(ExpenseBuilder builder){
-        super(builder.date, builder.amount, builder.note, builder.isRecurring);
+        super(builder.date, builder.amount, builder.note, builder.isRecurring, builder.recurringId);
         this.category = builder.category;
     }
 
@@ -40,6 +44,7 @@ public class Expense extends Transaction implements BudgetComponent {
         private String date;
         private String note;
         private boolean isRecurring;
+        private String recurringId;
 
 
         public ExpenseBuilder(BigDecimal amount) {
@@ -62,6 +67,11 @@ public class Expense extends Transaction implements BudgetComponent {
         }
         public ExpenseBuilder setIsRecurring(boolean isRecurring) {
             this.isRecurring = isRecurring;
+            return this;
+        }
+
+        public ExpenseBuilder setRecurringId(String recurringId) {
+            this.recurringId = recurringId;
             return this;
         }
 
