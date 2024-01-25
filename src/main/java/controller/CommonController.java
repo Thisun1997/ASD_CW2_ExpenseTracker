@@ -18,16 +18,30 @@ public class CommonController {
     }
 
     public static int getTotalTransactionCount(YearMonth yearMonth) {
-        return TransactionService.getTotalTransactionCount(yearMonth);
+        try {
+            return TransactionService.getTotalTransactionCount(yearMonth);
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+            return 0;
+        }
     }
 
     public static Transaction getTransactionById(YearMonth yearMonth, int transactionId) {
-        return TransactionService.getTransactionById(yearMonth, transactionId);
+        try {
+            return TransactionService.getTransactionById(yearMonth, transactionId);
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+            return null;
+        }
     }
 
     public static void deleteTransaction(int transactionId, YearMonth yearMonth) {
-        TransactionService.deleteTransaction(yearMonth, transactionId);
-        System.out.println("Transaction deleted successfully.");
+        try {
+            TransactionService.deleteTransaction(yearMonth, transactionId);
+            System.out.println("Transaction deleted successfully.");
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+        }
     }
 
     public static void setBudget(Scanner scanner, YearMonth yearMonth){
