@@ -118,8 +118,7 @@ public class TransactionRepository {
         int transactionCount = 0;
         for(YearMonth yearMonth:transactionsMap.keySet()){
             for(Transaction transaction:transactionsMap.get(yearMonth)){
-                if ((transaction instanceof Expense && ((Expense)transaction).getCategory().equals(category)) ||
-                        (transaction instanceof Income && ((Income)transaction).getCategory().equals(category))) {
+                if (transaction.getCategory().equals(category)) {
                     transactionCount++;
                 }
             }
@@ -129,8 +128,7 @@ public class TransactionRepository {
 
     public static void removeTransactions(Category category){
         for(YearMonth yearMonth:transactionsMap.keySet()){
-            transactionsMap.get(yearMonth).removeIf(transaction -> ((transaction instanceof Expense && ((Expense)transaction).getCategory().equals(category)) ||
-                    (transaction instanceof Income && ((Income)transaction).getCategory().equals(category))));
+            transactionsMap.get(yearMonth).removeIf(transaction -> transaction.getCategory().equals(category));
         }
     }
 }

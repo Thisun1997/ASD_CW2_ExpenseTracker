@@ -198,18 +198,18 @@ public class MainController {
 
         if (transaction instanceof Income) {
             controller = IncomeController.getInstance(scanner, yearMonth);
-            System.out.println("Current Category: " + ((Income) transaction).getCategory().getName());
+            System.out.println("Current Category: " + transaction.getCategory().getName());
             controller.showCategories();
             System.out.print("Please enter the category id: ");
             String input = scanner.nextLine();
-            selectedCategory = input.isEmpty() ? ((Income) transaction).getCategory() : controller.getCategory(Integer.parseInt(input)-1);
+            selectedCategory = input.isEmpty() ? transaction.getCategory() : controller.getCategory(Integer.parseInt(input)-1);
         } else if (transaction instanceof Expense) {
             controller = ExpenseController.getInstance(scanner, yearMonth);
-            System.out.println("Current Category: " + ((Expense) transaction).getCategory().getName());
+            System.out.println("Current Category: " + transaction.getCategory().getName());
             controller.showCategories();
             System.out.print("Please enter the category id: ");
             String input = scanner.nextLine();
-            selectedCategory = input.isEmpty() ? ((Expense) transaction).getCategory() : controller.getCategory(Integer.parseInt(input)-1);
+            selectedCategory = input.isEmpty() ? transaction.getCategory() : controller.getCategory(Integer.parseInt(input)-1);
         } else {
             System.out.println("Unknown transaction type. Cannot edit.");
             return;

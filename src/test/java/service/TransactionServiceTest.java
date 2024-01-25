@@ -64,7 +64,7 @@ class TransactionServiceTest {
         Transaction updatedTransaction = TransactionService.getTransactionById(YearMonth.of(2022, 4), Integer.parseInt(TransactionRepository.getTransactions(YearMonth.of(2022, 4)).get(0).getId()));
 
         assertNotNull(updatedTransaction);
-        assertEquals("Updated Retail", ((Expense) updatedTransaction).getCategory().getName());
+        assertEquals("Updated Retail", updatedTransaction.getCategory().getName());
         assertEquals(BigDecimal.valueOf(150), updatedTransaction.getAmount());
         assertEquals("Updated Shopping", updatedTransaction.getNote());
         assertTrue(updatedTransaction.isRecurring());
