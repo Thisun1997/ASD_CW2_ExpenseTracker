@@ -1,12 +1,12 @@
 package controller;
 
-import model.ExpenseCategory;
+import model.*;
 import service.ExpenseCategoryService;
-import service.IncomeCategoryService;
 import service.TransactionService;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Scanner;
 
 public class ExpenseController extends Controller{
@@ -15,6 +15,12 @@ public class ExpenseController extends Controller{
     private ExpenseController(Scanner scanner,YearMonth yearMonth){
         super(scanner,yearMonth);
     }
+
+    @Override
+    public List<Category> getCategories() {
+        return ExpenseCategoryService.getCategories();
+    }
+
     public static synchronized Controller getInstance(Scanner scanner,YearMonth yearMonth){
         if(expenseController == null){
             expenseController = new ExpenseController(scanner, yearMonth);
@@ -28,9 +34,10 @@ public class ExpenseController extends Controller{
         System.out.println("*************** Expense Categories ***************");
         System.out.println("Index\t"+"Category"+tab.repeat(3)+"Budget for "+yearMonth.toString());
         int index =1;
-        for(ExpenseCategory cat: ExpenseCategoryService.getCategories()){
-            String name = cat.getName();
-            System.out.println(index + tab.repeat(2) + name + tab.repeat(6-(name.length()/4)) + cat.getBudgetLimit(yearMonth));
+        for(Category cat: ExpenseCategoryService.getCategories()){
+            ExpenseCategory category = (ExpenseCategory)cat;
+            String name = category.getName();
+            System.out.println(index + tab.repeat(2) + name + tab.repeat(6-(name.length()/4)) + category.getBudgetLimit(yearMonth));
             index++;
         }
     }
@@ -67,7 +74,7 @@ public class ExpenseController extends Controller{
         int index = Utils.getCommand(
                 scanner,"Please enter the category index:",1, ExpenseCategoryService.getCategoryCount());
         index--;
-        ExpenseCategory expenseCategory = ExpenseCategoryService.getCategory(index);
+        ExpenseCategory expenseCategory = (ExpenseCategory) ExpenseCategoryService.getCategory(index);
         boolean exitLoop = false;
         while (!exitLoop){
             System.out.println("Category Name: "+ expenseCategory.getName() + "\n"+
@@ -94,8 +101,8 @@ public class ExpenseController extends Controller{
     }
 
     @Override
-    public Category getCategoryById(int categoryId) {
-        return ExpenseCategoryService.getCategoryById(categoryId);
+    public Category getCategory(int index) {
+        return ExpenseCategoryService.getCategory(index);
     }
 
     @Override

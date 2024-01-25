@@ -1,11 +1,10 @@
 package controller;
 
-import model.IncomeCategory;
+import model.*;
 import service.IncomeCategoryService;
 import service.TransactionService;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +15,7 @@ public class IncomeController extends Controller{
     private IncomeController(Scanner scanner, YearMonth yearMonth){
         super(scanner,yearMonth);
     }
+
     public static Controller getInstance(Scanner scanner,YearMonth yearMonth){
         if(incomeController == null){
             incomeController = new IncomeController(scanner,yearMonth);
@@ -28,7 +28,7 @@ public class IncomeController extends Controller{
         System.out.println("*************** Income Categories ***************");
         System.out.println("Index\tCategory");
         int index = 1;
-        for(IncomeCategory cat: IncomeCategoryService.getCategories()){
+        for(Category cat: IncomeCategoryService.getCategories()){
             System.out.println(index + "\t\t" + cat.getName());
             index++;
         }
@@ -64,7 +64,7 @@ public class IncomeController extends Controller{
         int index = Utils.getCommand(
                 scanner,"Please enter the category index:",1, IncomeCategoryService.getCategoryCount());
         index--;
-        IncomeCategory incomeCategory = IncomeCategoryService.getCategory(index);
+        IncomeCategory incomeCategory = (IncomeCategory) IncomeCategoryService.getCategory(index);
         boolean exitLoop = false;
         while (!exitLoop){
             System.out.println("Category Name: "+ incomeCategory.getName());
@@ -81,10 +81,15 @@ public class IncomeController extends Controller{
             }
         }
     }
-    
+
     @Override
     public List<Category> getCategories() {
         return IncomeCategoryService.getCategories();
+    }
+
+    @Override
+    public Category getCategory(int index) {
+        return IncomeCategoryService.getCategory(index);
     }
 
     @Override

@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class IncomeCategoryService{
-    private static List<IncomeCategory> incomeCategories;
+    private static List<Category> incomeCategories;
 
-    public static List<IncomeCategory> getCategories() {
+    public static List<Category> getCategories() {
         incomeCategories = CategoryRepository.getIncomeCategories();
         return incomeCategories;
     }
@@ -24,15 +24,15 @@ public class IncomeCategoryService{
         return incomeCategories.size();
     }
 
-    public static IncomeCategory getCategory(int index) { return incomeCategories.get(index);}
+    public static Category getCategory(int index) { return incomeCategories.get(index);}
 
     public static void deleteCategory(int index){
-        CategoryRepository.deleteCategory(incomeCategories.get(index));
+        CategoryRepository.deleteCategory((IncomeCategory) incomeCategories.get(index));
         incomeCategories = CategoryRepository.getIncomeCategories();
     }
 
     public static void updateIncomeCategory(int index, String name) {
-        CategoryRepository.updateIncomeCategory(incomeCategories.get(index),name);
+        CategoryRepository.updateIncomeCategory((IncomeCategory) incomeCategories.get(index),name);
         incomeCategories = CategoryRepository.getIncomeCategories();
     }
 }
