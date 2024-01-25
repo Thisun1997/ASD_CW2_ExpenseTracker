@@ -293,7 +293,17 @@ public class MainController {
     }
 
     private static void changeYearMonth() {
-//        System.out.println();
+        try {
+            System.out.print("Add year: ");
+            int year = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Add month: ");
+            int month = Integer.parseInt(scanner.nextLine());
+
+            yearMonth = YearMonth.of(year, month);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+        }
     }
 
     private static void showCategories() {
