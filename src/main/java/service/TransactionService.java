@@ -7,7 +7,6 @@ import util.RecurringIdGenerator;
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -137,5 +136,9 @@ public class TransactionService {
     
     public static void removeTransactions(Category category){
         TransactionRepository.removeTransactions(category);
+    }
+
+    public static int getTotalTransactionCount(YearMonth yearMonth) {
+        return TransactionRepository.getTotalTransactionCount(yearMonth);
     }
 }

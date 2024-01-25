@@ -131,4 +131,15 @@ public class TransactionRepository {
             transactionsMap.get(yearMonth).removeIf(transaction -> transaction.getCategory().equals(category));
         }
     }
+
+    public static int getTotalTransactionCount(YearMonth yearMonth) {
+        int maxId = 0;
+        List<Transaction> transactionList = transactionsMap.get(yearMonth);
+        for (Transaction transaction : transactionList) {
+            if(Integer.parseInt(transaction.getId()) > maxId) {
+                maxId = Integer.parseInt(transaction.getId());
+            }
+        }
+        return maxId;
+    }
 }

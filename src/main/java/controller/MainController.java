@@ -179,14 +179,14 @@ public class MainController {
     private static void editTransaction() {
         int subChoice;
         Utils.printSeparator();
-        List<Transaction> transactionList = CommonController.getTransactions(yearMonth);
-        if(transactionList.isEmpty()) {
+        int count = CommonController.getTotalTransactionCount(yearMonth);
+        if(count == 0) {
             System.out.println("No Transactions available. Exiting to previous menu.");
             return;  // Go back to the previous menu
         }
         showTransactions();
         System.out.println("*****Select the Transaction Id You want to edit*****");
-        subChoice = Utils.getCommand(scanner,"Enter Command:",1,transactionList.size());
+        subChoice = Utils.getCommand(scanner,"Enter Transaction Id:",1,count);
         Transaction transaction = CommonController.getTransactionById(yearMonth, subChoice);
 
         if(transaction == null){
@@ -242,14 +242,14 @@ public class MainController {
     private static void deleteTransaction() {
         int subChoice;
         Utils.printSeparator();
-        List<Transaction> transactionList = CommonController.getTransactions(yearMonth);
-        if(transactionList.isEmpty()) {
+        int count = CommonController.getTotalTransactionCount(yearMonth);
+        if(count == 0) {
             System.out.println("No Transactions available. Exiting to previous menu.");
             return;  // Go back to the previous menu
         }
         showTransactions();
         System.out.println("*****Select the Transaction Id You want to delete*****");
-        subChoice = Utils.getCommand(scanner,"Enter Transaction Id:",1,transactionList.size()); //
+        subChoice = Utils.getCommand(scanner,"Enter Transaction Id:",1,count); //
         CommonController.deleteTransaction(subChoice, yearMonth);
     }
 

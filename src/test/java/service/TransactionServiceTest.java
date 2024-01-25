@@ -96,5 +96,12 @@ class TransactionServiceTest {
         TransactionService.removeTransactions(category);
         assertEquals(0,TransactionService.getTransactionCount(category));
     }
+
+    @Test
+    void getTotalTransactionCount() {
+        ExpenseCategory category = new ExpenseCategory("Vacation", YearMonth.of(2022, 2), BigDecimal.TEN);
+        TransactionService.addTransaction(YearMonth.of(2022, 2), "2022-05-15", BigDecimal.valueOf(80), "Hotel", category, false, true);
+        assertEquals(31,TransactionService.getTotalTransactionCount(YearMonth.of(2022, 2)));
+    }
 }
 

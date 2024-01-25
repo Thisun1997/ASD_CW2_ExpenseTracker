@@ -7,7 +7,6 @@ import service.TransactionService;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
-import java.util.List;
 import java.util.Scanner;
 
 import static constants.Constants.YES;
@@ -18,8 +17,8 @@ public class CommonController {
         TransactionService.showTransactions(yearMonth);
     }
 
-    public static List<Transaction> getTransactions(YearMonth yearMonth) {
-        return TransactionService.getTransactions(yearMonth);
+    public static int getTotalTransactionCount(YearMonth yearMonth) {
+        return TransactionService.getTotalTransactionCount(yearMonth);
     }
 
     public static Transaction getTransactionById(YearMonth yearMonth, int transactionId) {

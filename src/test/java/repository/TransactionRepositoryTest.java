@@ -155,5 +155,13 @@ class TransactionRepositoryTest {
         List<Transaction> transactions = TransactionRepository.getTransactions(YearMonth.of(2022, 6));
         assertTrue(transactions.isEmpty());
     }
+
+    @Test
+    void getTotalTransactionCount() {
+        ExpenseCategory category = new ExpenseCategory("food",YearMonth.of(2022, 11), BigDecimal.valueOf(100));
+        Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
+        TransactionRepository.addTransaction(YearMonth.of(2022, 11), expense);
+        assertEquals(4,TransactionRepository.getTotalTransactionCount(YearMonth.of(2022, 11)));
+    }
 }
 
