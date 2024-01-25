@@ -1,26 +1,29 @@
 package controller;
 
+import model.Category;
 import model.ExpenseCategory;
 import service.ExpenseCategoryService;
-import service.TransactionService;
-import service.IncomeCategoryService;
 import service.TransactionService;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ExpenseController extends Controller{
-    private static ExpenseController expenseController = null;
+    private static final HashMap<YearMonth, ExpenseController> yearMonthExpenseControllerMap = new HashMap<>();
 
     private ExpenseController(Scanner scanner,YearMonth yearMonth){
         super(scanner,yearMonth);
     }
     public static synchronized Controller getInstance(Scanner scanner,YearMonth yearMonth){
-        if(expenseController == null){
-            expenseController = new ExpenseController(scanner, yearMonth);
+        if(yearMonthExpenseControllerMap.containsKey(yearMonth)){
+            return yearMonthExpenseControllerMap.get(yearMonth);
+        } else {
+            ExpenseController expenseController = new ExpenseController(scanner, yearMonth);
+            yearMonthExpenseControllerMap.put(yearMonth, expenseController);
+            return expenseController;
         }
-        return expenseController;
     }
 
     @Override
@@ -95,8 +98,13 @@ public class ExpenseController extends Controller{
     }
 
     @Override
-    public List<Category> getCategories() {
-        return ExpenseCategoryService.getCategories();
+    public Category getCategory(int index) {
+        return ExpenseCategoryService.getCategory(index);
+    }
+
+    @Override
+    public int getCategoriesSize() {
+        return ExpenseCategoryService.getCategories().size();
     }
 
     @Override

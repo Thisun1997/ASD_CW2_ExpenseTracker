@@ -22,7 +22,7 @@ class TransactionServiceTest {
 
     @Test
     void addTransactionNonRecurring() {
-        TransactionService.addTransaction(YearMonth.of(2022, 1), "2022-01-15", BigDecimal.valueOf(100), "Groceries", new ExpenseCategory("Food", 1, BigDecimal.TEN, YearMonth.of(2022, 2)), false, true);
+        TransactionService.addTransaction(YearMonth.of(2022, 1), "2022-01-15", BigDecimal.valueOf(100), "Groceries", new ExpenseCategory("Food", YearMonth.of(2022, 2), BigDecimal.TEN), false, true);
         List<Transaction> transactions = TransactionService.getTransactions(YearMonth.of(2022, 1));
 
         assertFalse(transactions.isEmpty());
@@ -34,7 +34,7 @@ class TransactionServiceTest {
 
     @Test
     void addTransactionRecurring() {
-        TransactionService.addTransaction(YearMonth.of(2022, 2), "2022-02-20", BigDecimal.valueOf(200), "Monthly Subscription", new ExpenseCategory("Subscription", 2, BigDecimal.TEN, YearMonth.of(2022, 2)), true, true);
+        TransactionService.addTransaction(YearMonth.of(2022, 2), "2022-02-20", BigDecimal.valueOf(200), "Monthly Subscription", new ExpenseCategory("Subscription", YearMonth.of(2022, 2), BigDecimal.TEN), true, true);
         Map<YearMonth, List<Transaction>> transactions = TransactionService.getTransactionsMap();
 
         assertEquals(12, transactions.size()); // 12 months for a recurring transaction
@@ -48,7 +48,7 @@ class TransactionServiceTest {
 
     @Test
     void deleteTransaction() {
-        TransactionService.addTransaction(YearMonth.of(2022, 3), "2022-03-10", BigDecimal.valueOf(50), "Dinner", new ExpenseCategory("Dining", 3, BigDecimal.TEN, YearMonth.of(2022, 2)), false, true);
+        TransactionService.addTransaction(YearMonth.of(2022, 3), "2022-03-10", BigDecimal.valueOf(50), "Dinner", new ExpenseCategory("Dining", YearMonth.of(2022, 2), BigDecimal.TEN), false, true);
         TransactionService.deleteTransaction(YearMonth.of(2022, 3), Integer.parseInt(TransactionRepository.getTransactions(YearMonth.of(2022, 3)).get(0).getId()));
 
         List<Transaction> transactions = TransactionService.getTransactions(YearMonth.of(2022, 3));
@@ -57,9 +57,9 @@ class TransactionServiceTest {
 
     @Test
     void updateTransaction() {
-        TransactionService.addTransaction(YearMonth.of(2022, 4), "2022-04-05", BigDecimal.valueOf(120), "Shopping", new ExpenseCategory("Retail", 4, BigDecimal.TEN, YearMonth.of(2022, 2)), false, true);
+        TransactionService.addTransaction(YearMonth.of(2022, 4), "2022-04-05", BigDecimal.valueOf(120), "Shopping", new ExpenseCategory("Retail", YearMonth.of(2022, 2), BigDecimal.TEN), false, true);
         TransactionService.updateTransaction(YearMonth.of(2022, 4), Integer.parseInt(TransactionRepository.getTransactions(YearMonth.of(2022, 4)).get(0).getId()),
-                new ExpenseCategory("Updated Retail", 5, BigDecimal.TEN, YearMonth.of(2022, 2)), BigDecimal.valueOf(150), "Updated Shopping", "2022-04-05", true, true);
+                new ExpenseCategory("Updated Retail", YearMonth.of(2022, 2), BigDecimal.TEN), BigDecimal.valueOf(150), "Updated Shopping", "2022-04-05", true, true);
 
         Transaction updatedTransaction = TransactionService.getTransactionById(YearMonth.of(2022, 4), Integer.parseInt(TransactionRepository.getTransactions(YearMonth.of(2022, 4)).get(0).getId()));
 
@@ -72,7 +72,7 @@ class TransactionServiceTest {
 
     @Test
     void deleteRecurringTransaction() {
-        TransactionService.addTransaction(YearMonth.of(2022, 5), "2022-05-15", BigDecimal.valueOf(80), "Gym Membership", new ExpenseCategory("Fitness", 6, BigDecimal.TEN, YearMonth.of(2022, 2)), true, true);
+        TransactionService.addTransaction(YearMonth.of(2022, 5), "2022-05-15", BigDecimal.valueOf(80), "Gym Membership", new ExpenseCategory("Fitness", YearMonth.of(2022, 2), BigDecimal.TEN), true, true);
         TransactionService.deleteRecurringTransaction(YearMonth.of(2022, 5), TransactionRepository.getTransactions(YearMonth.of(2022, 5)).get(0).getRecurringId());
 
         List<Transaction> transactions = TransactionService.getTransactions(YearMonth.of(2022, 5));
@@ -80,6 +80,21 @@ class TransactionServiceTest {
 
         List<Transaction> upcomingMonthTransactions = TransactionService.getTransactions(YearMonth.of(2022, 12));
         assertTrue(upcomingMonthTransactions.isEmpty());
+    }
+
+    @Test
+    void getTransactionCount() {
+        ExpenseCategory category = new ExpenseCategory("Vacation", YearMonth.of(2022, 2), BigDecimal.TEN);
+        TransactionService.addTransaction(YearMonth.of(2022, 2), "2022-05-15", BigDecimal.valueOf(80), "Hotel", category, false, true);
+        assertEquals(1, TransactionService.getTransactionCount(category));
+    }
+
+    @Test
+    void removeTransactions() {
+        ExpenseCategory category = new ExpenseCategory("Vacation", YearMonth.of(2022, 2), BigDecimal.TEN);
+        TransactionService.addTransaction(YearMonth.of(2022, 2), "2022-05-15", BigDecimal.valueOf(80), "Hotel", category, false, true);
+        TransactionService.removeTransactions(category);
+        assertEquals(0,TransactionService.getTransactionCount(category));
     }
 }
 

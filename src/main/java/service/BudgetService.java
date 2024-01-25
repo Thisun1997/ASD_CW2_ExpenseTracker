@@ -19,7 +19,7 @@ import static constants.Constants.*;
 public class BudgetService {
     public static List<BudgetLineItem> getProgress(YearMonth yearMonth) {
         List<BudgetLineItem> lineItems = new ArrayList<>();
-        List<Category> categories = CategoryRepository.getExpenseCategories();
+        List<ExpenseCategory> categories = CategoryRepository.getExpenseCategories();
         HashMap<String, List<Expense>> categoryMap = TransactionRepository.getTransactionsGroupedByYearMonthAndCategory(categories, yearMonth);
         BudgetLineItem totalBudgetLineItem = new BudgetLineItem();
         totalBudgetLineItem.setLineItemName(TOTAL);

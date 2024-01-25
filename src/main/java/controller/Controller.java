@@ -22,17 +22,11 @@ public abstract class Controller {
     }
 
     public abstract void showCategories();
-
-    public abstract int addCategory();
-
     public abstract void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring);
-
-    public abstract Category getCategoryById(int categoryId);
-
-    public abstract List<Category> getCategories();
-
     public abstract void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring);
     public abstract String addCategory();
     public abstract void deleteCategory();
     public abstract void updateCategory();
+    public abstract Category getCategory(int index);
+    public abstract int getCategoriesSize();
 }

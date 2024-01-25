@@ -1,7 +1,5 @@
 package model;
 
-import java.time.YearMonth;
-
 public abstract class Category {
 
     protected String name;

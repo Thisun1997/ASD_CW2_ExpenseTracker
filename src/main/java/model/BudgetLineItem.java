@@ -46,6 +46,8 @@ public class BudgetLineItem implements BudgetComponent {
 
     @Override
     public String toString() {
-        return lineItemName + "\t| " + getTotal() + "\t| " + limit;
+        String tab = "\t";
+        BigDecimal total = getTotal();
+        return lineItemName + tab.repeat(6-(lineItemName.length()/4)) + getTotal() + tab.repeat(6-(total.toString().length()/4)) + limit;
     }
 }

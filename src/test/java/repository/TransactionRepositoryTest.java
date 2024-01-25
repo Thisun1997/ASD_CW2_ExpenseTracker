@@ -2,6 +2,7 @@ package repository;
 
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import service.TransactionService;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Order(3)
 class TransactionRepositoryTest {
 
     @BeforeEach
@@ -23,7 +25,7 @@ class TransactionRepositoryTest {
 
     @Test
     void addTransaction() {
-        TransactionRepository.addTransaction(YearMonth.of(2022, 1), new Expense.ExpenseBuilder(BigDecimal.TEN).setCategory(new ExpenseCategory("food", 1, BigDecimal.TEN, YearMonth.of(2022, 2))).setDate("23").setNote("").setIsRecurring(false).setRecurringId(null).build());
+        TransactionRepository.addTransaction(YearMonth.of(2022, 1), new Expense.ExpenseBuilder(BigDecimal.TEN).setCategory(new ExpenseCategory("food",  YearMonth.of(2022, 2), BigDecimal.TEN)).setDate("23").setNote("").setIsRecurring(false).setRecurringId(null).build());
         List<Transaction> transactions = TransactionRepository.getTransactions(YearMonth.of(2022, 1));
 
         assertFalse(transactions.isEmpty());
@@ -32,7 +34,7 @@ class TransactionRepositoryTest {
 
     @Test
     void getTransactions() {
-        TransactionRepository.addTransaction(YearMonth.of(2022, 2), new Income("2022-02-15", BigDecimal.valueOf(500), "Salary", false, new IncomeCategory("Salary", 1), null));
+        TransactionRepository.addTransaction(YearMonth.of(2022, 2), new Income("2022-02-15", BigDecimal.valueOf(500), "Salary", false, new IncomeCategory("Salary"), null));
         List<Transaction> transactions = TransactionRepository.getTransactions(YearMonth.of(2022, 2));
 
         assertFalse(transactions.isEmpty());
@@ -43,7 +45,7 @@ class TransactionRepositoryTest {
 
     @Test
     void getTransactionById() {
-        Transaction income = new Income("2022-03-20", BigDecimal.valueOf(300), "Part-time job", false, new IncomeCategory("Part-time", 2), null);
+        Transaction income = new Income("2022-03-20", BigDecimal.valueOf(300), "Part-time job", false, new IncomeCategory("Part-time"), null);
         TransactionRepository.addTransaction(YearMonth.of(2022, 3), income);
 
         Transaction retrievedTransaction = TransactionRepository.getTransactionById(YearMonth.of(2022, 3), Integer.parseInt(income.getId()));
@@ -84,9 +86,9 @@ class TransactionRepositoryTest {
 
     @Test
     void updateRecurringTransaction() {
-        Transaction originalTransaction = new Income("2022-06-10", BigDecimal.valueOf(200), "Freelance work", true, new IncomeCategory("Freelance", 3), "456");
+        Transaction originalTransaction = new Income("2022-06-10", BigDecimal.valueOf(200), "Freelance work", true, new IncomeCategory("Freelance"), "456");
 
-        TransactionRepository.updateRecurringTransaction(originalTransaction, new IncomeCategory("Updated Freelance", 4), BigDecimal.valueOf(250), "Updated work", "2022-06-10", false);
+        TransactionRepository.updateRecurringTransaction(originalTransaction, new IncomeCategory("Updated Freelance"), BigDecimal.valueOf(250), "Updated work", "2022-06-10", false);
 
         assertEquals("Updated work", originalTransaction.getNote());
         assertEquals(BigDecimal.valueOf(250), originalTransaction.getAmount());
@@ -94,7 +96,7 @@ class TransactionRepositoryTest {
 
     @Test
     void getExpenses() {
-        TransactionRepository.addTransaction(YearMonth.of(2022, 2), new Income("2022-02-15", BigDecimal.valueOf(500), "Salary", false, new IncomeCategory("Salary", 1), null));
+        TransactionRepository.addTransaction(YearMonth.of(2022, 2), new Income("2022-02-15", BigDecimal.valueOf(500), "Salary", false, new IncomeCategory("Salary"), null));
         TransactionRepository.addTransaction(YearMonth.of(2022, 2), new Expense.ExpenseBuilder(BigDecimal.valueOf(600)).build());
         List<Expense> expenses = TransactionRepository.getExpenses(YearMonth.of(2022, 2));
 
@@ -106,8 +108,8 @@ class TransactionRepositoryTest {
     @Test
     void getTransactionsGroupedByYearMonthAndCategory() {
         String categoryName = "Groceries";
-        ExpenseCategory category = new ExpenseCategory(categoryName,0, BigDecimal.valueOf(100), YearMonth.of(2022, 2));
-        List<Category> categories = Collections.singletonList(category);
+        ExpenseCategory category = new ExpenseCategory(categoryName,YearMonth.of(2022, 2), BigDecimal.valueOf(100));
+        List<ExpenseCategory> categories = Collections.singletonList(category);
         Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
         TransactionRepository.addTransaction(YearMonth.of(2022, 2), expense);
         HashMap<String, List<Expense>> categoryMapFetched = TransactionRepository.getTransactionsGroupedByYearMonthAndCategory(categories, YearMonth.of(2022, 2));
@@ -116,6 +118,42 @@ class TransactionRepositoryTest {
         assertEquals(categoryName,categoryMapFetched.keySet().stream().toList().get(0));
         assertEquals(1,categoryMapFetched.get(categoryName).size());
         assertEquals(expense,categoryMapFetched.get(categoryName).get(0));
+    }
+
+    @Test
+    void getTransactionCount_income_category() {
+        IncomeCategory category = new IncomeCategory("Salary");
+        Income income = new Income("2022-06-10", BigDecimal.valueOf(200), "Freelance work", true, category, "456");
+        TransactionRepository.addTransaction(YearMonth.of(2022, 6), income);
+        assertEquals(1,TransactionRepository.getTransactionCount(category));
+    }
+
+    @Test
+    void getTransactionCount_expense_category() {
+        ExpenseCategory category = new ExpenseCategory("food",YearMonth.of(2022, 6), BigDecimal.valueOf(100));
+        Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
+        TransactionRepository.addTransaction(YearMonth.of(2022, 6), expense);
+        assertEquals(1,TransactionRepository.getTransactionCount(category));
+    }
+
+    @Test
+    void removeTransaction_income_category() {
+        IncomeCategory category = new IncomeCategory("Salary");
+        Income income = new Income("2022-06-10", BigDecimal.valueOf(200), "Freelance work", true, category, "456");
+        TransactionRepository.addTransaction(YearMonth.of(2022, 6), income);
+        assertAll(() -> TransactionRepository.removeTransactions(category));
+        List<Transaction> transactions = TransactionRepository.getTransactions(YearMonth.of(2022, 6));
+        assertTrue(transactions.isEmpty());
+    }
+
+    @Test
+    void removeTransaction_expense_category() {
+        ExpenseCategory category = new ExpenseCategory("food",YearMonth.of(2022, 6), BigDecimal.valueOf(100));
+        Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
+        TransactionRepository.addTransaction(YearMonth.of(2022, 6), expense);
+        assertAll(() -> TransactionRepository.removeTransactions(category));
+        List<Transaction> transactions = TransactionRepository.getTransactions(YearMonth.of(2022, 6));
+        assertTrue(transactions.isEmpty());
     }
 }
 

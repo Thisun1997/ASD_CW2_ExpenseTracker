@@ -30,7 +30,7 @@ public class TransactionRepository {
                 .collect(Collectors.toList());
     }
 
-    public static HashMap<String, List<Expense>> getTransactionsGroupedByYearMonthAndCategory(List<Category> categories, YearMonth yearMonth) {
+    public static HashMap<String, List<Expense>> getTransactionsGroupedByYearMonthAndCategory(List<ExpenseCategory> categories, YearMonth yearMonth) {
         HashMap<String, List<Expense>> categoryMap = new HashMap<>();
         for(Category category: categories){
             categoryMap.putIfAbsent(category.getName(), new ArrayList<>());
@@ -116,9 +116,10 @@ public class TransactionRepository {
 
     public static int getTransactionCount(Category category){
         int transactionCount = 0;
-        for(YearMonth yearMonth:transactions.keySet()){
-            for(Transaction transaction:transactions.get(yearMonth)){
-                if(transaction.getCategory().equals(category)){
+        for(YearMonth yearMonth:transactionsMap.keySet()){
+            for(Transaction transaction:transactionsMap.get(yearMonth)){
+                if ((transaction instanceof Expense && ((Expense)transaction).getCategory().equals(category)) ||
+                        (transaction instanceof Income && ((Income)transaction).getCategory().equals(category))) {
                     transactionCount++;
                 }
             }
@@ -127,8 +128,9 @@ public class TransactionRepository {
     }
 
     public static void removeTransactions(Category category){
-        for(YearMonth yearMonth:transactions.keySet()){
-            transactions.get(yearMonth).removeIf(transaction -> transaction.getCategory().equals(category));
+        for(YearMonth yearMonth:transactionsMap.keySet()){
+            transactionsMap.get(yearMonth).removeIf(transaction -> ((transaction instanceof Expense && ((Expense)transaction).getCategory().equals(category)) ||
+                    (transaction instanceof Income && ((Income)transaction).getCategory().equals(category))));
         }
     }
 }

@@ -1,26 +1,29 @@
 package controller;
 
+import model.Category;
 import model.IncomeCategory;
 import service.IncomeCategoryService;
 import service.TransactionService;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class IncomeController extends Controller{
-    private static IncomeController incomeController= null;
+    private static final HashMap<YearMonth, IncomeController> yearMonthIncomeControllerMap = new HashMap<>();
 
     private IncomeController(Scanner scanner, YearMonth yearMonth){
         super(scanner,yearMonth);
     }
     public static Controller getInstance(Scanner scanner,YearMonth yearMonth){
-        if(incomeController == null){
-            incomeController = new IncomeController(scanner,yearMonth);
+        if(yearMonthIncomeControllerMap.containsKey(yearMonth)){
+            return yearMonthIncomeControllerMap.get(yearMonth);
+        } else {
+            IncomeController incomeController = new IncomeController(scanner, yearMonth);
+            yearMonthIncomeControllerMap.put(yearMonth, incomeController);
+            return incomeController;
         }
-        return incomeController;
     }
 
     @Override
@@ -91,5 +94,15 @@ public class IncomeController extends Controller{
     public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {
         TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, false);
         System.out.println("Income Transaction added successfully!");
+    }
+
+    @Override
+    public Category getCategory(int index) {
+        return IncomeCategoryService.getCategory(index);
+    }
+
+    @Override
+    public int getCategoriesSize() {
+        return IncomeCategoryService.getCategories().size();
     }
 }

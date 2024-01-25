@@ -1,6 +1,5 @@
 package service;
 
-import model.Category;
 import model.ExpenseCategory;
 import repository.CategoryRepository;
 

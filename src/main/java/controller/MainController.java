@@ -7,6 +7,7 @@ import model.Transaction;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainController {
@@ -112,10 +113,10 @@ public class MainController {
         int subChoice;
         boolean exitLoop = false;
         while (!exitLoop) {
-            printSeparator();
+            Utils.printSeparator();
             showTransactions();
             System.out.println("1: Add Transaction\t2: Delete Transaction\t3: Update Transaction\t4: Exit");
-            subChoice = getCommand(scanner);
+            subChoice = Utils.getCommand(scanner,"Enter Command:",1,4);
             switch (subChoice) {
                 case 1 -> {
                     addTransaction();
@@ -141,13 +142,12 @@ public class MainController {
     private static void handleProgress(){
         int subChoice;
         System.out.println("*****Budget*****");
-        printSeparator();
         initializeController(2);
         boolean exitLoop = false;
         while(!exitLoop){
-            printSeparator();
+            Utils.printSeparator();
             System.out.println("1: Set Budget\t2: Check Progress\t3: Exit\t");
-            subChoice = getCommand(scanner);
+            subChoice = Utils.getCommand(scanner,"Enter Command:",1,3);
             switch (subChoice) {
                 case 1 -> {
                     setBudget();
@@ -178,16 +178,15 @@ public class MainController {
 
     private static void editTransaction() {
         int subChoice;
-        printSeparator();
-
-        if(CommonController.getTransactions(yearMonth).isEmpty()) {
+        Utils.printSeparator();
+        List<Transaction> transactionList = CommonController.getTransactions(yearMonth);
+        if(transactionList.isEmpty()) {
             System.out.println("No Transactions available. Exiting to previous menu.");
             return;  // Go back to the previous menu
         }
         showTransactions();
         System.out.println("*****Select the Transaction Id You want to edit*****");
-        subChoice = getCommand(scanner);
-
+        subChoice = Utils.getCommand(scanner,"Enter Command:",1,transactionList.size());
         Transaction transaction = CommonController.getTransactionById(yearMonth, subChoice);
 
         if(transaction == null){
@@ -203,14 +202,14 @@ public class MainController {
             controller.showCategories();
             System.out.print("Please enter the category id: ");
             String input = scanner.nextLine();
-            selectedCategory = input.isEmpty() ? ((Income) transaction).getCategory() : controller.getCategoryById(Integer.parseInt(input));
+            selectedCategory = input.isEmpty() ? ((Income) transaction).getCategory() : controller.getCategory(Integer.parseInt(input)-1);
         } else if (transaction instanceof Expense) {
             controller = ExpenseController.getInstance(scanner, yearMonth);
             System.out.println("Current Category: " + ((Expense) transaction).getCategory().getName());
             controller.showCategories();
             System.out.print("Please enter the category id: ");
             String input = scanner.nextLine();
-            selectedCategory = input.isEmpty() ? ((Expense) transaction).getCategory() : controller.getCategoryById(Integer.parseInt(input));
+            selectedCategory = input.isEmpty() ? ((Expense) transaction).getCategory() : controller.getCategory(Integer.parseInt(input)-1);
         } else {
             System.out.println("Unknown transaction type. Cannot edit.");
             return;
@@ -242,7 +241,7 @@ public class MainController {
 
     private static void deleteTransaction() {
         int subChoice;
-        printSeparator();
+        Utils.printSeparator();
 
         if(CommonController.getTransactions(yearMonth).isEmpty()) {
             System.out.println("No Transactions available. Exiting to previous menu.");
@@ -250,7 +249,7 @@ public class MainController {
         }
         showTransactions();
         System.out.println("*****Select the Transaction Id You want to delete*****");
-        subChoice = getCommand(scanner);
+        subChoice = Utils.getCommand(scanner,"Enter Transaction Id:",1,4); //
         CommonController.deleteTransaction(subChoice, yearMonth);
     }
 
@@ -258,20 +257,19 @@ public class MainController {
         int subChoice;
         System.out.println("*****Select the Transaction Type*****");
         System.out.println("Transaction Types\n1:Income\n2:Expense");
-        subChoice = getCommand(scanner);
-        printSeparator();
+        subChoice = Utils.getCommand(scanner,"Enter Command:",1,2);
+        Utils.printSeparator();
         initializeController(subChoice);
 
-        if (controller.getCategories().isEmpty()) {
+        if (controller.getCategoriesSize() == 0) {
             System.out.println("No categories available. Exiting to previous menu.");
             return;  // Go back to the previous menu
         }
 
         controller.showCategories();
 
-        System.out.print("Please enter the category id: ");
-        int choice = getCommand(scanner);
-        Category selectedCategory = controller.getCategoryById(choice);
+        int choice = Utils.getCommand(scanner,"Please enter the category id:",1,controller.getCategoriesSize());
+        Category selectedCategory = controller.getCategory(choice-1);
 
         System.out.print("Enter amount: ");
         BigDecimal amount = new BigDecimal(scanner.nextLine());
@@ -294,8 +292,8 @@ public class MainController {
 
     private static void changeYearMonth(){
         Utils.printSeparator();
-        int month = Utils.getCommand(scanner,"Please enter a month (1-12):",1,12);
-        int year = Utils.getCommand(scanner, "Please enter a year",1970,5000);
+        int month = Utils.getCommand(scanner,"Please enter a month (1-12): ",1,12);
+        int year = Utils.getCommand(scanner, "Please enter a year: ",1970,5000);
         yearMonth = YearMonth.of(year,month);
     }
 

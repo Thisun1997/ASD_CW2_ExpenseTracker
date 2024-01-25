@@ -2,10 +2,7 @@ package repository;
 
 import model.Category;
 import model.ExpenseCategory;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -13,18 +10,24 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Order(1)
+@Order(2)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CategoryRepositoryTest {
 
     static YearMonth yearMonth = YearMonth.of(2024,1);
     static String expenseCategoryName = "test_category";
-    static ExpenseCategory category = new ExpenseCategory(expenseCategoryName,0, BigDecimal.valueOf(100), yearMonth);
+    static ExpenseCategory category = new ExpenseCategory(expenseCategoryName,yearMonth, BigDecimal.valueOf(100));
+
+    @AfterAll
+    static void clean() {
+        CategoryRepository.getExpenseCategories().clear();
+        CategoryRepository.getIncomeCategories().clear();
+    }
 
     @Test
     @Order(1)
     void addExpenseCategory() {
-        assertEquals(0,CategoryRepository.addCategory(category));
+        assertAll(() -> CategoryRepository.addCategory(category));
     }
 
     @Test
@@ -42,9 +45,9 @@ class CategoryRepositoryTest {
 
     @Test
     void getExpenseCategories() {
-        List<Category> categories = CategoryRepository.getExpenseCategories();
+        List<ExpenseCategory> categories = CategoryRepository.getExpenseCategories();
         assertEquals(1,categories.size());
         assertEquals(expenseCategoryName,categories.get(0).getName());
-        assertEquals(BigDecimal.valueOf(100),((ExpenseCategory)categories.get(0)).getBudgetLimit(yearMonth));
+        assertEquals(BigDecimal.valueOf(100),(categories.get(0)).getBudgetLimit(yearMonth));
     }
 }

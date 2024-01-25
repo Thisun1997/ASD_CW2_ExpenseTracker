@@ -24,10 +24,10 @@ class BudgetServiceTest {
 
     static String categoryName = "test_category";
     static YearMonth yearMonth = YearMonth.of(2024,1);
-    static ExpenseCategory category = new ExpenseCategory(categoryName,0, BigDecimal.valueOf(100), yearMonth);
+    static ExpenseCategory category = new ExpenseCategory(categoryName,yearMonth, BigDecimal.valueOf(100));
     static Expense expense = new Expense.ExpenseBuilder(BigDecimal.valueOf(10)).setCategory(category).build();
     static List<Expense> expenses = Collections.singletonList(expense);
-    static List<Category> budgetCategories = Collections.singletonList(category);
+    static List<ExpenseCategory> budgetCategories = Collections.singletonList(category);
     static HashMap<String, List<Expense>> categoryMap = new HashMap<>();
     static BigDecimal budgetAmount = BigDecimal.valueOf(1000);
 

@@ -48,7 +48,9 @@ public class CommonController {
 
     public static void showProgress(YearMonth yearMonth) {
         try {
-            System.out.println("Category\t| Amount spent\t| Budget Limit");
+            String tab = "\t";
+            System.out.println("Budget Progress for "+yearMonth.getYear()+"-"+yearMonth.getMonth());
+            System.out.println("Category" + tab.repeat(4) + "Amount spent" + tab.repeat(3) + "Budget Limit");
             for (BudgetLineItem budgetLineItem: BudgetService.getProgress(yearMonth)) {
                 System.out.println(budgetLineItem.toString());
             }
