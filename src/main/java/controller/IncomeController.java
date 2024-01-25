@@ -86,14 +86,23 @@ public class IncomeController extends Controller{
     }
     @Override
     public void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring) {
-        TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate,isRecurring, false);
+        try {
+            TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate, isRecurring, false);
+            System.out.println("Income Transaction updated successfully!");
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+        }
     }
 
 
     @Override
     public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {
-        TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, false);
-        System.out.println("Income Transaction added successfully!");
+        try {
+            TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, false);
+            System.out.println("Income Transaction added successfully!");
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+        }
     }
 
     @Override

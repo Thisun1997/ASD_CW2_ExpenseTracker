@@ -110,12 +110,21 @@ public class ExpenseController extends Controller{
 
     @Override
     public void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring) {
-        TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate,isRecurring, true);
+        try {
+            TransactionService.updateTransaction(yearMonth, transactionId, category, amount, note, currentDate, isRecurring, true);
+            System.out.println("Expense Transaction updated successfully!");
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+        }
     }
 
     @Override
     public void addTransaction(YearMonth yearMonth, String currentDate, BigDecimal amount, String note, Category selectedCategory, boolean isRecurring) {
-        TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, true);
-        System.out.println("Expense Transaction added successfully!");
+        try {
+            TransactionService.addTransaction(yearMonth, currentDate, amount, note, selectedCategory, isRecurring, true);
+            System.out.println("Expense Transaction added successfully!");
+        } catch (Exception e) {
+            System.out.print("Error :"+e.getMessage());
+        }
     }
 }
