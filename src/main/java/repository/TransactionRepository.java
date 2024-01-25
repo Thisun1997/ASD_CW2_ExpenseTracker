@@ -113,4 +113,22 @@ public class TransactionRepository {
         transaction.setNote(note);
         transaction.setDate(currentDate);
     }
+
+    public static int getTransactionCount(Category category){
+        int transactionCount = 0;
+        for(YearMonth yearMonth:transactions.keySet()){
+            for(Transaction transaction:transactions.get(yearMonth)){
+                if(transaction.getCategory().equals(category)){
+                    transactionCount++;
+                }
+            }
+        }
+        return transactionCount;
+    }
+
+    public static void removeTransactions(Category category){
+        for(YearMonth yearMonth:transactions.keySet()){
+            transactions.get(yearMonth).removeIf(transaction -> transaction.getCategory().equals(category));
+        }
+    }
 }

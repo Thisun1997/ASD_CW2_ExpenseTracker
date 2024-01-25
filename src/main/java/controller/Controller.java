@@ -16,7 +16,7 @@ public abstract class Controller {
     protected Scanner scanner;
     protected YearMonth yearMonth;
 
-    public Controller(Scanner scanner, YearMonth yearMonth) {
+    public Controller(Scanner scanner, YearMonth yearMonth){
         this.scanner = scanner;
         this.yearMonth = yearMonth;
     }
@@ -32,4 +32,7 @@ public abstract class Controller {
     public abstract List<Category> getCategories();
 
     public abstract void updateTransaction(YearMonth yearMonth, int transactionId, Category category, BigDecimal amount, String note, String currentDate, boolean isRecurring);
+    public abstract String addCategory();
+    public abstract void deleteCategory();
+    public abstract void updateCategory();
 }

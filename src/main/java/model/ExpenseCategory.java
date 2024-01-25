@@ -6,17 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ExpenseCategory extends Category{
+    private static final BigDecimal zero = new BigDecimal(0);
+    private final Map<YearMonth,BigDecimal> budgetLimits = new HashMap<>();
 
-    private Map<YearMonth,BigDecimal> budgetLimits = new HashMap<>();
-    public static final BigDecimal zero = new BigDecimal(0);
-
-    public ExpenseCategory(String name, int categoryId, BigDecimal budget, YearMonth yearMonth) {
-        super(name, categoryId);
-        budgetLimits.put(yearMonth, budget);
+    public ExpenseCategory(String name,YearMonth yearMonth, BigDecimal budget) {
+        super(name);
+        budgetLimits.put(yearMonth,budget);
     }
-
-    public String toString(YearMonth yearMonth) {
-        return categoryId + "\t| " + name + "\t| " + getBudgetLimit(yearMonth).toString();
+    public ExpenseCategory(String name) {
+        super(name);
     }
 
     public BigDecimal getBudgetLimit(YearMonth yearMonth) {

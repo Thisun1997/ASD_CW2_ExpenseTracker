@@ -130,4 +130,11 @@ public class TransactionService {
             nextYearMonth = nextYearMonth.plusMonths(1);
         } while (found);
     }
+
+    public static int getTransactionCount(Category category){
+        return TransactionRepository.getTransactionCount(category);
+    }
+    public static void removeTransactions(Category category){
+        TransactionRepository.removeTransactions(category);
+    }
 }

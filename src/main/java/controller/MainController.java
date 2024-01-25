@@ -15,7 +15,7 @@ public class MainController {
     private static Controller controller;
     private static YearMonth yearMonth;
 
-    private static void initialize() {
+    private static void initialize(){
         yearMonth = YearMonth.now();
         scanner = new Scanner(System.in);
     }
@@ -35,18 +35,18 @@ public class MainController {
         System.out.println("Welcome to the Expense Tracking App! \n");
 
         while (true) {
-            printSeparator();
-            System.out.println("Year :" + yearMonth.getYear() + " Month: " + yearMonth.getMonth());
-            System.out.println("Following actions are possible: \n" +
-                    "1. Show categories \n" +
-                    "2. Show transactions \n" +
-                    "3. Show Budget \n" +
-                    "4. Change the current month and year \n" +
+            Utils.printSeparator();
+            System.out.println("Year :"+yearMonth.getYear()+" Month: "+yearMonth.getMonth());
+            System.out.println("Following actions are possible:\n" +
+                    "1. Show categories\n" +
+                    "2. Show transactions\n" +
+                    "3. Show Budget\n" +
+                    "4. Change the current month and year\n" +
                     "5. Exit");
 
             System.out.println();
 
-            int choice = getCommand(scanner);
+            int choice = Utils.getCommand(scanner,"Enter Command:",1,5);
 
             switch (choice) {
                 case 1 -> {
@@ -72,28 +72,28 @@ public class MainController {
         }
     }
 
-    private static void handleCategories() {
+    private static void handleCategories(){
         int subChoice;
+        Utils.printSeparator();
         System.out.println("*****Categories*****");
         System.out.println("Category Types\n1:Income\n2:Expense");
-        subChoice = getCommand(scanner);
-        printSeparator();
+        subChoice = Utils.getCommand(scanner,"Enter Command:",1,2);
         initializeController(subChoice);
         boolean exitLoop = false;
-        while (!exitLoop) {
-            printSeparator();
+        while(!exitLoop){
+            Utils.printSeparator();
             showCategories();
             System.out.println("1: Add Category\t2: Delete Category\t3: Update Category\t4: Exit");
-            subChoice = getCommand(scanner);
+            subChoice = Utils.getCommand(scanner,"Enter Command:",1,4);
             switch (subChoice) {
                 case 1 -> {
                     addCategory();
                 }
                 case 2 -> {
-//                                ExpenseTrackerController.deletCategory(categoryService);
+                    deleteCategory();
                 }
                 case 3 -> {
-//                                ExpenseTrackerController.updateCategory(categoryService);
+                    updateCategory();
                 }
                 case 4 -> {
                     exitLoop = true;
@@ -292,46 +292,30 @@ public class MainController {
         CommonController.showTransactions(yearMonth);
     }
 
-    private static void changeYearMonth() {
-        try {
-            System.out.print("Add year: ");
-            int year = Integer.parseInt(scanner.nextLine());
-
-            System.out.print("Add month: ");
-            int month = Integer.parseInt(scanner.nextLine());
-
-            yearMonth = YearMonth.of(year, month);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
-        }
+    private static void changeYearMonth(){
+        Utils.printSeparator();
+        int month = Utils.getCommand(scanner,"Please enter a month (1-12):",1,12);
+        int year = Utils.getCommand(scanner, "Please enter a year",1970,5000);
+        yearMonth = YearMonth.of(year,month);
     }
 
     private static void showCategories() {
         controller.showCategories();
     }
 
-    private static void addCategory() {
-        System.out.println("Category added successfully with category Id: " + controller.addCategory());
+    private static void addCategory(){
+        Utils.printSeparator();
+        System.out.println("Category added successfully with category Name: " + controller.addCategory());
     }
 
-    public static int getCommand(Scanner scanner) {
-        int choice;
-        while (true) {
-            try {
-                System.out.print("Enter Command: ");
-                choice = Integer.parseInt(scanner.nextLine());
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
-        return choice;
+    private static void deleteCategory(){
+        Utils.printSeparator();
+        controller.deleteCategory();
     }
 
-    public static void printSeparator() {
-        for (int i = 0; i < 100; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
+    private static void updateCategory(){
+        Utils.printSeparator();
+        controller.updateCategory();
     }
+
 }
