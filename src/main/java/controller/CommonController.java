@@ -21,7 +21,7 @@ public class CommonController {
         try {
             return TransactionService.getTotalTransactionCount(yearMonth);
         } catch (Exception e) {
-            System.out.print("Error :"+e.getMessage());
+            System.out.println("Error :"+e.getMessage());
             return 0;
         }
     }
@@ -30,7 +30,7 @@ public class CommonController {
         try {
             return TransactionService.getTransactionById(yearMonth, transactionId);
         } catch (Exception e) {
-            System.out.print("Error :"+e.getMessage());
+            System.out.println("Error :"+e.getMessage());
             return null;
         }
     }
@@ -40,7 +40,7 @@ public class CommonController {
             TransactionService.deleteTransaction(yearMonth, transactionId);
             System.out.println("Transaction deleted successfully.");
         } catch (Exception e) {
-            System.out.print("Error :"+e.getMessage());
+            System.out.println("Error :"+e.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public class CommonController {
             }
             System.out.print(BudgetService.setBudget(budget, yearMonth, action));
         } catch (Exception e) {
-            System.out.print("Error :"+e.getMessage());
+            System.out.println("Error :"+e.getMessage());
         }
     };
 
@@ -68,7 +68,7 @@ public class CommonController {
                 System.out.println(budgetLineItem.toString());
             }
         } catch (Exception e) {
-            System.out.print("Error :"+e.getMessage());
+            System.out.println("Error :"+e.getMessage());
         }
     }
 }
